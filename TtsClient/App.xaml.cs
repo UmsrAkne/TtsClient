@@ -1,5 +1,7 @@
 ﻿using System.Windows;
 using Prism.Ioc;
+using TtsClient.TtsEngine;
+using TtsClient.ViewModels;
 using TtsClient.Views;
 
 namespace TtsClient;
@@ -16,5 +18,7 @@ public partial class App
 
     protected override void RegisterTypes(IContainerRegistry containerRegistry)
     {
+        containerRegistry.Register<EditorPageViewModel>();
+        containerRegistry.Register<ITtsEngine, GoogleTtsEngine>();
     }
 }

@@ -14,9 +14,15 @@ public class MainWindowViewModel : BindableBase
         SetupDebugData();
     }
 
+    public MainWindowViewModel(EditorPageViewModel editorPageViewModel)
+    {
+        EditorPageViewModel = editorPageViewModel;
+        SetupDebugData();
+    }
+
     public string Title => appVersionInfo.Title;
 
-    public EditorPageViewModel EditorPageViewModel { get; } = new ();
+    public EditorPageViewModel EditorPageViewModel { get; }
 
     public ExplorerPageViewModel ExplorerPageViewModel { get; } = new ();
 
