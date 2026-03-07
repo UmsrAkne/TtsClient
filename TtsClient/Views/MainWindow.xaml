@@ -6,9 +6,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:viewModels="clr-namespace:TtsClient.ViewModels"
+    xmlns:views="clr-namespace:TtsClient.Views"
     Title="{Binding Title}"
-    Width="525"
-    Height="350"
+    Width="1200"
+    Height="720"
     d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}"
     prism:ViewModelLocator.AutoWireViewModel="True"
     Background="{StaticResource WindowBackground}"
@@ -19,7 +20,32 @@
         </Style>
     </Window.Resources>
 
-    <Grid>
-        <ContentControl prism:RegionManager.RegionName="ContentRegion" />
+    <Grid Margin="4">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TabControl Grid.Row="0">
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock Text="Explorer" />
+                </TabItem.Header>
+                <views:ExplorerPage DataContext="{Binding ExplorerPageViewModel}" />
+            </TabItem>
+
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock Text="Editor" />
+                </TabItem.Header>
+                <views:EditorPage DataContext="{Binding EditorPageViewModel}" />
+            </TabItem>
+        </TabControl>
+
+        <Border Grid.Row="1">
+            <TextBlock Text="Status bar" />
+        </Border>
+
     </Grid>
+
 </Window>
