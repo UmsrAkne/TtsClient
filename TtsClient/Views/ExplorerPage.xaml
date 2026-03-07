@@ -3,8 +3,10 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:TtsClient.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:TtsClient.Models"
+    xmlns:viewModels="clr-namespace:TtsClient.ViewModels"
+    d:DataContext="{d:DesignInstance viewModels:ExplorerPageViewModel}"
     d:DesignHeight="720"
     d:DesignWidth="1200"
     mc:Ignorable="d">
@@ -28,7 +30,17 @@
         <ListBox
             Grid.Row="0"
             Grid.RowSpan="2"
-            Grid.Column="0" />
+            Grid.Column="0"
+            ItemsSource="{Binding SpeechEntries}">
+
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type models:SpeechEntry}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding AudioPath}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
         <Border Grid.Row="0" Grid.Column="1">
             <TextBlock Text="Detail Area" />
