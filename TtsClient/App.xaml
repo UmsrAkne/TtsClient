@@ -1,0 +1,11 @@
+﻿<prism:PrismApplication
+    x:Class="TtsClient.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:prism="http://prismlibrary.com/"
+    xmlns:system="clr-namespace:System;assembly=System.Runtime">
+    <Application.Resources>
+        <SolidColorBrush x:Key="WindowBackground" Color="White" />
+        <system:Double x:Key="CommonFontSize">16.0</system:Double>
+    </Application.Resources>
+</prism:PrismApplication>
