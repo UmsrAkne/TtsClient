@@ -11,25 +11,29 @@ namespace TtsClient.ViewModels
     public class EditorPageViewModel : BindableBase
     {
         private readonly ITtsEngine ttsEngine;
+        private TtsRequest pendingRequest = new ();
 
         public EditorPageViewModel(ITtsEngine ttsEngine)
         {
             this.ttsEngine = ttsEngine;
         }
 
+        public TtsRequest PendingRequest
+        {
+            get => pendingRequest;
+            set => SetProperty(ref pendingRequest, value);
+        }
+
         public AsyncRelayCommand SendRequestCommand => new (async () =>
         {
             var req = new TtsRequest
             {
-                Text = "こんにちは、Google Cloud Text-to-Speechです。",
-                LanguageCode = "ja-JP",
+                Text = PendingRequest.Text,
                 Voice = "ja-JP-Wavenet-D",
-                Gender = "MALE",
-                AudioFormat = "MP3",
             };
 
             var byteArray = await ttsEngine.SynthesizeAsync(req);
-            var fileName = $"{Guid.NewGuid()}.mp3";
+            var fileName = $"{DateTime.Now.ToString($"yyyyMMdd_HHmmss_fff")}.mp3";
             var path = Path.Combine(PathHelper.GetTtsAudioDirectoryPath(), fileName);
 
             await File.WriteAllBytesAsync(path, byteArray);

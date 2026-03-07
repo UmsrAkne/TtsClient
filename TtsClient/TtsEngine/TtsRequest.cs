@@ -1,15 +1,21 @@
-﻿namespace TtsClient.TtsEngine
+﻿using Prism.Mvvm;
+
+namespace TtsClient.TtsEngine
 {
-    public class TtsRequest
+    public class TtsRequest : BindableBase
     {
-        public string Text { get; set; }
+        private string text;
+        private string voice;
+        private string audioFormat = "MP3";
 
-        public string LanguageCode { get; set; }
+        public string Text { get => text; set => SetProperty(ref text, value); }
 
-        public string Voice { get; set; }
+        public string LanguageCode { get; set; } = "ja-JP";
 
-        public string Gender { get; set; }
+        public string Voice { get => voice; set => SetProperty(ref voice, value); }
 
-        public string AudioFormat { get; set; } = "mp3";
+        public string Gender { get; set; } = "MALE";
+
+        public string AudioFormat { get => audioFormat; set => SetProperty(ref audioFormat, value); }
     }
 }
