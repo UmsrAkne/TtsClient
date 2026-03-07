@@ -35,6 +35,12 @@
 
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type models:SpeechEntry}">
+                    <DataTemplate.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="FontSize" Value="{StaticResource CommonFontSize}" />
+                        </Style>
+                    </DataTemplate.Resources>
+
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{Binding AudioPath}" />
                     </StackPanel>
