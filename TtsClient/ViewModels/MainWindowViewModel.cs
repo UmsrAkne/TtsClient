@@ -26,6 +26,8 @@ public class MainWindowViewModel : BindableBase
 
     public ExplorerPageViewModel ExplorerPageViewModel { get; } = new ();
 
+    public TextFormatPageViewModel TextFormatPageViewModel { get; } = new ();
+
     [Conditional("DEBUG")]
     private void SetupDebugData()
     {

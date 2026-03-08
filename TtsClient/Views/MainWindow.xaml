@@ -40,6 +40,13 @@
                 </TabItem.Header>
                 <views:EditorPage DataContext="{Binding EditorPageViewModel}" />
             </TabItem>
+
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock Text="Text Formatter" />
+                </TabItem.Header>
+                <views:TextFormatPage DataContext="{Binding TextFormatPageViewModel}" />
+            </TabItem>
         </TabControl>
 
         <Border Grid.Row="1">

@@ -7,6 +7,7 @@
     <Application.Resources>
         <SolidColorBrush x:Key="WindowBackground" Color="White" />
         <SolidColorBrush x:Key="TextBoxBackground" Color="White" />
+        <SolidColorBrush x:Key="CommonBorderBrush" Color="DodgerBlue" />
         <system:Double x:Key="CommonFontSize">16.0</system:Double>
     </Application.Resources>
 </prism:PrismApplication>
