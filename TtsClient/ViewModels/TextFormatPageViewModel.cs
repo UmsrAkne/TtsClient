@@ -1,5 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
+using Prism.Commands;
 using Prism.Mvvm;
 using TtsClient.Texts;
 
@@ -18,6 +20,23 @@ namespace TtsClient.ViewModels
         public ObservableCollection<TextProcessingStep> TextProcessingSteps { get; } = new ();
 
         public string OriginalText { get => originalText; set => SetProperty(ref originalText, value); }
+
+        public DelegateCommand AddStepCommand => new (() =>
+        {
+            TextProcessingSteps.Add(new TextProcessingStep());
+        });
+
+        public DelegateCommand<TextProcessingStep> AddReplacementRuleCommand => new (AddReplacementRule);
+
+        private void AddReplacementRule(TextProcessingStep param)
+        {
+            if (param == null)
+            {
+                throw new ArgumentException("param is null", nameof(param));
+            }
+
+            param.ReplacementRules.Add(new ReplacementRule());
+        }
 
         [Conditional("DEBUG")]
         private void SetupDebugData()

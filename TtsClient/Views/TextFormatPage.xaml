@@ -31,67 +31,93 @@
         </Grid.RowDefinitions>
 
         <ScrollViewer Grid.Row="1">
+            <StackPanel>
 
-            <ItemsControl ItemsSource="{Binding TextProcessingSteps}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="{x:Type texts:TextProcessingStep}">
-                        <StackPanel>
-                            <DockPanel>
-                                <TextBlock
-                                    Width="80"
-                                    FontSize="{StaticResource CommonFontSize}"
-                                    Text="Caption :" />
-                                <TextBox FontSize="{StaticResource CommonFontSize}" Text="{Binding ExtractionPattern}" />
-                            </DockPanel>
+                <ItemsControl ItemsSource="{Binding TextProcessingSteps}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type texts:TextProcessingStep}">
+                            <StackPanel>
+                                <DockPanel>
+                                    <TextBlock
+                                        Width="80"
+                                        FontSize="{StaticResource CommonFontSize}"
+                                        Text="Caption :" />
+                                    <TextBox FontSize="{StaticResource CommonFontSize}" Text="{Binding ExtractionPattern}" />
+                                </DockPanel>
 
-                            <ItemsControl ItemsSource="{Binding ReplacementRules}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate DataType="{x:Type texts:ReplacementRule}">
+                                <ItemsControl ItemsSource="{Binding ReplacementRules}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate DataType="{x:Type texts:ReplacementRule}">
 
-                                        <DataTemplate.Resources>
-                                            <Style TargetType="TextBlock">
-                                                <Setter Property="FontSize" Value="{StaticResource CommonFontSize}" />
-                                            </Style>
+                                            <DataTemplate.Resources>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="FontSize" Value="{StaticResource CommonFontSize}" />
+                                                </Style>
 
-                                            <Style TargetType="TextBox">
-                                                <Setter Property="FontSize" Value="{StaticResource CommonFontSize}" />
-                                                <Setter Property="Background" Value="{StaticResource TextBoxBackground}" />
-                                                <Setter Property="Margin" Value="5,0" />
-                                                <Setter Property="Width" Value="150" />
-                                            </Style>
-                                        </DataTemplate.Resources>
+                                                <Style TargetType="TextBox">
+                                                    <Setter Property="FontSize" Value="{StaticResource CommonFontSize}" />
+                                                    <Setter Property="Background" Value="{StaticResource TextBoxBackground}" />
+                                                    <Setter Property="Margin" Value="5,0" />
+                                                    <Setter Property="Width" Value="150" />
+                                                </Style>
+                                            </DataTemplate.Resources>
 
-                                        <StackPanel Margin="25,2" Orientation="Horizontal">
-                                            <DockPanel Margin="2">
-                                                <TextBlock Text="Pattern:" />
-                                                <TextBox Text="{Binding Pattern}" />
-                                            </DockPanel>
+                                            <StackPanel Margin="25,2" Orientation="Horizontal">
+                                                <DockPanel Margin="2">
+                                                    <TextBlock Text="Pattern:" />
+                                                    <TextBox Text="{Binding Pattern}" />
+                                                </DockPanel>
 
-                                            <Border Width="40" />
+                                                <Border Width="40" />
 
-                                            <DockPanel Margin="2">
-                                                <TextBlock Text="Replacement:" />
-                                                <TextBox Text="{Binding Replacement}" />
-                                            </DockPanel>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
+                                                <DockPanel Margin="2">
+                                                    <TextBlock Text="Replacement:" />
+                                                    <TextBox Text="{Binding Replacement}" />
+                                                </DockPanel>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
 
-                            <Border
-                                Height="1.5"
-                                Margin="0,5,0,0"
-                                Background="{StaticResource CommonBorderBrush}" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
+                                <Button
+                                    Width="200"
+                                    Margin="25,0"
+                                    Padding="2"
+                                    HorizontalAlignment="Left"
+                                    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ItemsControl}, Path=DataContext.AddReplacementRuleCommand}"
+                                    CommandParameter="{Binding}">
+                                    <Button.Content>
+                                        <TextBlock FontSize="{StaticResource CommonFontSize}" Text="Add replacement" />
+                                    </Button.Content>
+                                </Button>
 
-                <ItemsControl.ItemContainerStyle>
-                    <Style TargetType="ContentPresenter">
-                        <Setter Property="Margin" Value="4" />
-                    </Style>
-                </ItemsControl.ItemContainerStyle>
-            </ItemsControl>
+                                <Border
+                                    Height="1.5"
+                                    Margin="0,5,0,0"
+                                    Background="{StaticResource CommonBorderBrush}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+
+                    <ItemsControl.ItemContainerStyle>
+                        <Style TargetType="ContentPresenter">
+                            <Setter Property="Margin" Value="4" />
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
+                </ItemsControl>
+
+                <Button
+                    Width="200"
+                    Margin="4"
+                    Padding="2"
+                    HorizontalAlignment="Left"
+                    Command="{Binding AddStepCommand}">
+                    <Button.Content>
+                        <TextBlock Text="Add item" />
+                    </Button.Content>
+                </Button>
+
+            </StackPanel>
         </ScrollViewer>
 
         <TextBox Grid.Row="2" Text="{Binding OriginalText, UpdateSourceTrigger=PropertyChanged, Delay=500}" />
