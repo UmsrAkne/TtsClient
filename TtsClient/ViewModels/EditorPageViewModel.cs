@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using CommunityToolkit.Mvvm.Input;
 using Prism.Mvvm;
+using TtsClient.Texts;
 using TtsClient.TtsEngine;
 using TtsClient.Utils;
 
@@ -11,11 +13,13 @@ namespace TtsClient.ViewModels
     public class EditorPageViewModel : BindableBase
     {
         private readonly ITtsEngine ttsEngine;
+        private readonly SsmlGen ssmlGen = new ();
         private TtsRequest pendingRequest = new ();
 
         public EditorPageViewModel(ITtsEngine ttsEngine)
         {
             this.ttsEngine = ttsEngine;
+            SetupDebugData();
         }
 
         public TtsRequest PendingRequest
@@ -28,7 +32,7 @@ namespace TtsClient.ViewModels
         {
             var req = new TtsRequest
             {
-                Text = PendingRequest.Text,
+                Text = ssmlGen.SurroundProsody(PendingRequest.Text),
                 Voice = "ja-JP-Wavenet-D",
             };
 
@@ -38,5 +42,11 @@ namespace TtsClient.ViewModels
 
             await File.WriteAllBytesAsync(path, byteArray);
         });
+
+        [Conditional("DEBUG")]
+        private void SetupDebugData()
+        {
+            PendingRequest.Text = "グーグルクラウド Text To Speech のテストです。";
+        }
     }
 }

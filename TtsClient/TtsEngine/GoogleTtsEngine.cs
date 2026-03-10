@@ -25,7 +25,7 @@ namespace TtsClient.TtsEngine
 
             var body = new
             {
-                input = new { text = request.Text, },
+                input = new { ssml = request.Text, },
                 voice = new
                 {
                     languageCode = request.LanguageCode,
