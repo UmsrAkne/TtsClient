@@ -37,7 +37,16 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="{x:Type texts:TextProcessingStep}">
                             <StackPanel>
-                                <DockPanel>
+                                <DockPanel LastChildFill="True">
+                                    <Button
+                                        Margin="5,0,0,0"
+                                        Padding="2"
+                                        HorizontalAlignment="Right"
+                                        Command="{Binding DataContext.RemoveStepCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                        CommandParameter="{Binding}"
+                                        DockPanel.Dock="Right">
+                                        <TextBlock FontSize="{StaticResource CommonFontSize}" Text="Delete" />
+                                    </Button>
                                     <TextBlock
                                         Width="80"
                                         FontSize="{StaticResource CommonFontSize}"
@@ -74,6 +83,15 @@
                                                     <TextBlock Text="Replacement:" />
                                                     <TextBox Text="{Binding Replacement}" />
                                                 </DockPanel>
+
+                                                <Button
+                                                    Margin="10,0,0,0"
+                                                    Padding="2"
+                                                    HorizontalAlignment="Left"
+                                                    Command="{Binding DataContext.RemoveReplacementRuleCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    CommandParameter="{Binding}">
+                                                    <TextBlock FontSize="{StaticResource CommonFontSize}" Text="Delete" />
+                                                </Button>
                                             </StackPanel>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
