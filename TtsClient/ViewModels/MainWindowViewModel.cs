@@ -16,6 +16,7 @@ public class MainWindowViewModel : BindableBase
 
     public MainWindowViewModel(EditorPageViewModel editorPageViewModel)
     {
+        Logger.Log("MainWindowViewModel constructor executed.");
         EditorPageViewModel = editorPageViewModel;
         SetupDebugData();
     }

@@ -11,5 +11,10 @@ namespace TtsClient.Utils
             Directory.CreateDirectory(baseDir);
             return baseDir;
         }
+
+        public static string GetApplicationDirectory()
+        {
+            return AppDomain.CurrentDomain.BaseDirectory;
+        }
     }
 }
