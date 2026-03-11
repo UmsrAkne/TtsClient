@@ -12,13 +12,13 @@ namespace TtsClient.ViewModels
     // ReSharper disable once ClassNeverInstantiated.Global
     public class EditorPageViewModel : BindableBase
     {
-        private readonly ITtsEngine ttsEngine;
+        private readonly TtsService ttsService;
         private readonly SsmlGen ssmlGen = new ();
         private TtsRequest pendingRequest = new ();
 
-        public EditorPageViewModel(ITtsEngine ttsEngine)
+        public EditorPageViewModel(TtsService ttsService)
         {
-            this.ttsEngine = ttsEngine;
+            TtsService = ttsService;
             SetupDebugData();
         }
 
@@ -28,6 +28,8 @@ namespace TtsClient.ViewModels
             set => SetProperty(ref pendingRequest, value);
         }
 
+        public TtsService TtsService { get; set; }
+
         public AsyncRelayCommand SendRequestCommand => new (async () =>
         {
             var req = new TtsRequest
@@ -36,7 +38,7 @@ namespace TtsClient.ViewModels
                 Voice = "ja-JP-Wavenet-D",
             };
 
-            var byteArray = await ttsEngine.SynthesizeAsync(req);
+            var byteArray = await ttsService.SynthesizeAsync(req);
             var fileName = $"{DateTime.Now.ToString($"yyyyMMdd_HHmmss_fff")}.mp3";
             var path = Path.Combine(PathHelper.GetTtsAudioDirectoryPath(), fileName);
 
