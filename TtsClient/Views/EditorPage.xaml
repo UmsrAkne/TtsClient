@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ttsEngine="clr-namespace:TtsClient.TtsEngine"
     xmlns:viewModels="clr-namespace:TtsClient.ViewModels"
     d:DataContext="{d:DesignInstance viewModels:EditorPageViewModel}"
     d:DesignHeight="280"
@@ -26,6 +27,25 @@
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+
+        <StackPanel
+            Grid.Row="0"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
+            <TextBlock Margin="10,0" Text="Service:" />
+            <ComboBox
+                Width="300"
+                ItemsSource="{Binding TtsService.AvailableEngines}"
+                SelectedItem="{Binding TtsService.CurrentEngine}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type ttsEngine:ITtsEngine}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontSize="{StaticResource CommonFontSize}" Text="{Binding EngineName}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </StackPanel>
 
         <TextBox Grid.Row="1" Text="{Binding PendingRequest.Text, UpdateSourceTrigger=PropertyChanged, Delay=500}" />
 

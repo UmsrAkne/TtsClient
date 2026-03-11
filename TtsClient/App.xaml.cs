@@ -19,6 +19,7 @@ public partial class App
     protected override void RegisterTypes(IContainerRegistry containerRegistry)
     {
         containerRegistry.Register<EditorPageViewModel>();
-        containerRegistry.Register<ITtsEngine, GoogleTtsEngine>();
+        containerRegistry.RegisterSingleton<ITtsEngine, DummyTtsEngine>();
+        containerRegistry.RegisterSingleton<ITtsEngine, GoogleTtsEngine>();
     }
 }
