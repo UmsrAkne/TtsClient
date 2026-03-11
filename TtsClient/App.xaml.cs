@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using Prism.Ioc;
+using TtsClient.Databases;
 using TtsClient.TtsEngine;
 using TtsClient.Utils;
 using TtsClient.ViewModels;
@@ -20,6 +21,11 @@ public partial class App
     protected override void RegisterTypes(IContainerRegistry containerRegistry)
     {
         containerRegistry.Register<EditorPageViewModel>();
+        containerRegistry.Register<ExplorerPageViewModel>();
+
+        containerRegistry.RegisterSingleton<SpeechService>();
+        containerRegistry.RegisterSingleton<ISpeechRepository, JsonSpeechRepository>();
+
         containerRegistry.RegisterSingleton<ITtsEngine, DummyTtsEngine>();
         containerRegistry.RegisterSingleton<ITtsEngine, GoogleTtsEngine>();
     }
