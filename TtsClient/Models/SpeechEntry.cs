@@ -7,6 +7,8 @@ namespace TtsClient.Models
     /// </summary>
     public class SpeechEntry
     {
+        public Guid Id { get; set; }
+
         /// <summary>
         /// ユーザーが入力した「生のテキスト」
         /// </summary>

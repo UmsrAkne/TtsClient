@@ -14,9 +14,13 @@ public class MainWindowViewModel : BindableBase
         SetupDebugData();
     }
 
-    public MainWindowViewModel(EditorPageViewModel editorPageViewModel)
+    public MainWindowViewModel(
+        EditorPageViewModel editorPageViewModel,
+        ExplorerPageViewModel explorerPageViewModel)
     {
+        Logger.Log("MainWindowViewModel constructor executed.");
         EditorPageViewModel = editorPageViewModel;
+        ExplorerPageViewModel = explorerPageViewModel;
         SetupDebugData();
     }
 
@@ -24,7 +28,7 @@ public class MainWindowViewModel : BindableBase
 
     public EditorPageViewModel EditorPageViewModel { get; }
 
-    public ExplorerPageViewModel ExplorerPageViewModel { get; } = new ();
+    public ExplorerPageViewModel ExplorerPageViewModel { get; }
 
     public TextFormatPageViewModel TextFormatPageViewModel { get; } = new ();
 

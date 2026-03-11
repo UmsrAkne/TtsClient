@@ -11,5 +11,15 @@ namespace TtsClient.Utils
             Directory.CreateDirectory(baseDir);
             return baseDir;
         }
+
+        public static string GetApplicationDirectory()
+        {
+            return AppDomain.CurrentDomain.BaseDirectory;
+        }
+
+        public static string GetSpeechEntriesJsonFilePath()
+        {
+            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "speech_entries.json");
+        }
     }
 }
