@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using CommunityToolkit.Mvvm.Input;
 using Prism.Mvvm;
+using TtsClient.Databases;
 using TtsClient.Texts;
 using TtsClient.TtsEngine;
 using TtsClient.Utils;
@@ -12,13 +13,14 @@ namespace TtsClient.ViewModels
     // ReSharper disable once ClassNeverInstantiated.Global
     public class EditorPageViewModel : BindableBase
     {
-        private readonly TtsService ttsService;
         private readonly SsmlGen ssmlGen = new ();
+        private readonly SpeechService speechService;
         private TtsRequest pendingRequest = new ();
 
-        public EditorPageViewModel(TtsService ttsService)
+        public EditorPageViewModel(TtsService ttsService, SpeechService speechService)
         {
             TtsService = ttsService;
+            this.speechService = speechService;
             SetupDebugData();
         }
 
@@ -38,11 +40,12 @@ namespace TtsClient.ViewModels
                 Voice = "ja-JP-Wavenet-D",
             };
 
-            var byteArray = await ttsService.SynthesizeAsync(req);
+            var byteArray = await TtsService.SynthesizeAsync(req);
             var fileName = $"{DateTime.Now.ToString($"yyyyMMdd_HHmmss_fff")}.mp3";
             var path = Path.Combine(PathHelper.GetTtsAudioDirectoryPath(), fileName);
 
             await File.WriteAllBytesAsync(path, byteArray);
+            await speechService.RegisterEntryAsync(req.Text, path);
         });
 
         [Conditional("DEBUG")]

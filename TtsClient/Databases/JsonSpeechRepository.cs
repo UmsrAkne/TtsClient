@@ -1,37 +1,65 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using TtsClient.Models;
+using TtsClient.Utils;
 
 namespace TtsClient.Databases
 {
     public class JsonSpeechRepository : ISpeechRepository
     {
-        private readonly string filePath;
-        private List<SpeechEntry> entries = new();
+        private readonly string jsonFilePath = PathHelper.GetSpeechEntriesJsonFilePath();
+        private readonly List<SpeechEntry> entries = new ();
 
-        public async Task<IEnumerable<SpeechEntry>> GetAllAsync()
+        public JsonSpeechRepository()
         {
-            // JSONのパース自体はCPU処理ですが、
-            // 将来のDBアクセスを模してTaskで返します
-            return await Task.FromResult(entries);
+            // 起動時に既存のデータを読み込んでおく
+            if (File.Exists(jsonFilePath))
+            {
+                try
+                {
+                    var json = File.ReadAllText(jsonFilePath);
+                    var deserialized = JsonSerializer.Deserialize<List<SpeechEntry>>(json);
+                    if (deserialized != null)
+                    {
+                        entries.AddRange(deserialized);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ファイルが壊れている場合などのハンドリング（ログ出力など）
+                    Logger.Log("Failed to load speech entries from JSON file.");
+                }
+            }
+        }
+
+        public Task<IEnumerable<SpeechEntry>> GetAllAsync()
+        {
+            // 読み取り専用としてリストを返す
+            return Task.FromResult(entries.AsEnumerable());
         }
 
         public Task AddAsync(SpeechEntry entry)
         {
-            // Todo: 仮実装
+            // リストに追加するだけ（保存は SaveAsync を呼ぶまで行わない設計）
             entries.Add(entry);
             return Task.CompletedTask;
         }
 
         public async Task SaveAsync()
         {
-            var options = new JsonSerializerOptions { WriteIndented = true, };
-            var json = JsonSerializer.Serialize(entries, options);
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true,
 
-            // ファイル書き込みを非同期で行う
-            await File.WriteAllTextAsync(filePath, json);
+                // 日本語が文字化けしないようにエンコーディングを指定
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(System.Text.Unicode.UnicodeRanges.All),
+            };
+
+            var json = JsonSerializer.Serialize(entries, options);
+            await File.WriteAllTextAsync(jsonFilePath, json);
         }
     }
 }
