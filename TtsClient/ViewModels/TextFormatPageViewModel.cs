@@ -5,22 +5,33 @@ using System.Linq;
 using Prism.Commands;
 using Prism.Mvvm;
 using TtsClient.Texts;
+using TtsClient.Utils;
 
 namespace TtsClient.ViewModels
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class TextFormatPageViewModel : BindableBase
     {
+        private readonly EditorPageViewModel editorPageViewModel;
         private string originalText;
+        private string processedText;
 
         public TextFormatPageViewModel()
         {
             SetupDebugData();
         }
 
+        public TextFormatPageViewModel(EditorPageViewModel editorPageViewModel)
+        {
+            this.editorPageViewModel = editorPageViewModel;
+            SetupDebugData();
+        }
+
         public ObservableCollection<TextProcessingStep> TextProcessingSteps { get; } = new ();
 
         public string OriginalText { get => originalText; set => SetProperty(ref originalText, value); }
+
+        public string ProcessedText { get => processedText; set => SetProperty(ref processedText, value); }
 
         public DelegateCommand AddStepCommand => new (() =>
         {
@@ -40,6 +51,22 @@ namespace TtsClient.ViewModels
         public DelegateCommand<TextProcessingStep> AddReplacementRuleCommand => new (AddReplacementRule);
 
         public DelegateCommand<ReplacementRule> RemoveReplacementRuleCommand => new (RemoveReplacementRule);
+
+        public DelegateCommand StartTextProcessCommand => new DelegateCommand(() =>
+        {
+            var text = string.Empty;
+            foreach (var step in TextProcessingSteps)
+            {
+                text += step.Execute(OriginalText);
+            }
+
+            ProcessedText = text;
+        });
+
+        public DelegateCommand CopyToEditorPanelCommand => new DelegateCommand(() =>
+        {
+            editorPageViewModel.PendingRequest.Text = ProcessedText;
+        });
 
         private void AddReplacementRule(TextProcessingStep param)
         {
