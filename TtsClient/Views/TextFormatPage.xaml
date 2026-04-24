@@ -158,10 +158,12 @@
             </Button>
         </Border>
 
-        <TextBox
-            Grid.Row="3"
-            AcceptsReturn="True"
-            Text="{Binding OriginalText, UpdateSourceTrigger=PropertyChanged, Delay=500}" />
+        <UniformGrid Grid.Row="3" Columns="2">
+
+            <TextBox AcceptsReturn="True" Text="{Binding OriginalText, UpdateSourceTrigger=PropertyChanged, Delay=500}" />
+
+            <TextBlock Margin="5" Text="{Binding ProcessedText}" />
+        </UniformGrid>
     </Grid>
 
 </UserControl>

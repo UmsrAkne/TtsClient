@@ -13,6 +13,7 @@ namespace TtsClient.ViewModels
     public class TextFormatPageViewModel : BindableBase
     {
         private string originalText;
+        private string processedText;
 
         public TextFormatPageViewModel()
         {
@@ -22,6 +23,8 @@ namespace TtsClient.ViewModels
         public ObservableCollection<TextProcessingStep> TextProcessingSteps { get; } = new ();
 
         public string OriginalText { get => originalText; set => SetProperty(ref originalText, value); }
+
+        public string ProcessedText { get => processedText; set => SetProperty(ref processedText, value); }
 
         public DelegateCommand AddStepCommand => new (() =>
         {
@@ -44,13 +47,13 @@ namespace TtsClient.ViewModels
 
         public DelegateCommand StartTextProcessCommand => new DelegateCommand(() =>
         {
-            string text = string.Empty;
+            var text = string.Empty;
             foreach (var step in TextProcessingSteps)
             {
                 text += step.Execute(OriginalText);
             }
 
-            Logger.Log(text);
+            ProcessedText = text;
         });
 
         private void AddReplacementRule(TextProcessingStep param)
