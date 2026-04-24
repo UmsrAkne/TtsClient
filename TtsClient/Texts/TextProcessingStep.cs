@@ -8,6 +8,7 @@ namespace TtsClient.Texts
     public class TextProcessingStep : BindableBase
     {
         private string caption = string.Empty;
+        private bool isSingleLine;
         private string extractionPattern = string.Empty;
 
         public string Caption { get => caption; set => SetProperty(ref caption, value); }
@@ -18,11 +19,18 @@ namespace TtsClient.Texts
             set => SetProperty(ref extractionPattern, value);
         }
 
+        public bool IsSingleLine
+        {
+            get => isSingleLine;
+            set => SetProperty(ref isSingleLine, value);
+        }
+
         public ObservableCollection<ReplacementRule> ReplacementRules { get; set; } = new ();
 
         public string Execute(string text)
         {
-            var matches = Regex.Matches(text, ExtractionPattern);
+            var options = IsSingleLine ? RegexOptions.Singleline : RegexOptions.None;
+            var matches = Regex.Matches(text, ExtractionPattern, options);
 
             // まず抽出。複数引っかる場合は改行つき結合。
             var builder = new StringBuilder();

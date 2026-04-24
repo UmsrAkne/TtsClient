@@ -38,6 +38,14 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="{x:Type texts:TextProcessingStep}">
                             <StackPanel>
+                                <StackPanel Margin="3" Orientation="Horizontal">
+                                    <CheckBox
+                                        Margin="5,0"
+                                        VerticalAlignment="Center"
+                                        IsChecked="{Binding IsSingleLine}" />
+                                    <TextBlock FontSize="{StaticResource CommonFontSize}" Text="Dot matches all (SingleLine)" />
+                                </StackPanel>
+
                                 <DockPanel LastChildFill="True">
                                     <Button
                                         Margin="5,0,0,0"
