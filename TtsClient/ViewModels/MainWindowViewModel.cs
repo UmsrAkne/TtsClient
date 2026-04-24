@@ -21,6 +21,7 @@ public class MainWindowViewModel : BindableBase
     public MainWindowViewModel(
         EditorPageViewModel editorPageViewModel,
         ExplorerPageViewModel explorerPageViewModel,
+        TextFormatPageViewModel textFormatPageViewModel,
         SpeechService speechService)
     {
         Logger.Log("MainWindowViewModel constructor executed.");
@@ -28,6 +29,7 @@ public class MainWindowViewModel : BindableBase
         this.speechService = speechService;
         EditorPageViewModel = editorPageViewModel;
         ExplorerPageViewModel = explorerPageViewModel;
+        TextFormatPageViewModel = textFormatPageViewModel;
         SetupDebugData();
 
         _ = LoadSpeechesAsync();
@@ -39,7 +41,7 @@ public class MainWindowViewModel : BindableBase
 
     public ExplorerPageViewModel ExplorerPageViewModel { get; }
 
-    public TextFormatPageViewModel TextFormatPageViewModel { get; } = new ();
+    public TextFormatPageViewModel TextFormatPageViewModel { get; }
 
     private async Task LoadSpeechesAsync()
     {

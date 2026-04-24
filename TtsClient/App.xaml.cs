@@ -20,8 +20,9 @@ public partial class App
 
     protected override void RegisterTypes(IContainerRegistry containerRegistry)
     {
-        containerRegistry.Register<EditorPageViewModel>();
+        containerRegistry.RegisterSingleton<EditorPageViewModel>();
         containerRegistry.Register<ExplorerPageViewModel>();
+        containerRegistry.Register<TextFormatPageViewModel>();
 
         containerRegistry.RegisterSingleton<SpeechService>();
         containerRegistry.RegisterSingleton<ISpeechRepository, JsonSpeechRepository>();

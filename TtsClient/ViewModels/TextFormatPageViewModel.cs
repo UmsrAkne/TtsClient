@@ -12,11 +12,18 @@ namespace TtsClient.ViewModels
     // ReSharper disable once ClassNeverInstantiated.Global
     public class TextFormatPageViewModel : BindableBase
     {
+        private readonly EditorPageViewModel editorPageViewModel;
         private string originalText;
         private string processedText;
 
         public TextFormatPageViewModel()
         {
+            SetupDebugData();
+        }
+
+        public TextFormatPageViewModel(EditorPageViewModel editorPageViewModel)
+        {
+            this.editorPageViewModel = editorPageViewModel;
             SetupDebugData();
         }
 
@@ -54,6 +61,11 @@ namespace TtsClient.ViewModels
             }
 
             ProcessedText = text;
+        });
+
+        public DelegateCommand CopyToEditorPanelCommand => new DelegateCommand(() =>
+        {
+            editorPageViewModel.PendingRequest.Text = ProcessedText;
         });
 
         private void AddReplacementRule(TextProcessingStep param)

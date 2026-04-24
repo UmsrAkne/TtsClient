@@ -29,6 +29,7 @@
             <RowDefinition />
             <RowDefinition Height="Auto" />
             <RowDefinition />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <ScrollViewer Grid.Row="1">
@@ -164,6 +165,15 @@
 
             <TextBlock Margin="5" Text="{Binding ProcessedText}" />
         </UniformGrid>
+
+        <Button
+            Grid.Row="4"
+            HorizontalAlignment="Right"
+            Command="{Binding CopyToEditorPanelCommand}">
+            <Button.Content>
+                <TextBlock Padding="20,0" Text="Send to editor" />
+            </Button.Content>
+        </Button>
     </Grid>
 
 </UserControl>
