@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.Input;
 using Prism.Commands;
@@ -17,6 +19,8 @@ namespace TtsClient.ViewModels
         private readonly EditorPageViewModel editorPageViewModel;
         private string originalText;
         private string processedText;
+        private string currentPresetFileName = string.Empty;
+        private ObservableCollection<string> presetFiles = new ();
 
         public TextFormatPageViewModel()
         {
@@ -26,10 +30,29 @@ namespace TtsClient.ViewModels
         public TextFormatPageViewModel(EditorPageViewModel editorPageViewModel)
         {
             this.editorPageViewModel = editorPageViewModel;
+
+            if (Directory.Exists(TextProcessingStepSerializer.DataDirectory))
+            {
+                var files = Directory.GetFiles(TextProcessingStepSerializer.DataDirectory);
+                PresetFiles = new ObservableCollection<string>(files.Select(Path.GetFileName));
+            }
+
             SetupDebugData();
         }
 
         public ObservableCollection<TextProcessingStep> TextProcessingSteps { get; } = new ();
+
+        public ObservableCollection<string> PresetFiles
+        {
+            get => presetFiles;
+            set => SetProperty(ref presetFiles, value);
+        }
+
+        public string CurrentPresetFileName
+        {
+            get => currentPresetFileName;
+            set => SetProperty(ref currentPresetFileName, value);
+        }
 
         public string OriginalText { get => originalText; set => SetProperty(ref originalText, value); }
 
@@ -72,8 +95,18 @@ namespace TtsClient.ViewModels
 
         public AsyncRelayCommand SaveStepsCommand => new (async () =>
         {
-            var dt = DateTime.Now.ToString("yyyyMMdd_HHmmss");
-            await TextProcessingStepSerializer.SaveAsync(TextProcessingSteps, dt);
+            var targetFileName = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+            if (!string.IsNullOrEmpty(CurrentPresetFileName))
+            {
+                targetFileName = CurrentPresetFileName;
+            }
+
+            await TextProcessingStepSerializer.SaveAsync(TextProcessingSteps, $"{targetFileName}.json");
+
+            var files = Directory.GetFiles(TextProcessingStepSerializer.DataDirectory);
+            PresetFiles = new ObservableCollection<string>(files.Select(Path.GetFileName));
+
+            CurrentPresetFileName = $"{targetFileName}.json";
         });
 
         private void AddReplacementRule(TextProcessingStep param)

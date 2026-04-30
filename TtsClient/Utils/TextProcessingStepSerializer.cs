@@ -9,7 +9,7 @@ namespace TtsClient.Utils
 {
     public static class TextProcessingStepSerializer
     {
-        private readonly static string DataDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data");
+        public readonly static string DataDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data");
 
         public static async Task SaveAsync(IEnumerable<TextProcessingStep> steps, string fileName)
         {

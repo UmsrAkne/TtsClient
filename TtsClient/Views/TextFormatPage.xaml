@@ -24,6 +24,13 @@
     </UserControl.Resources>
 
     <Grid>
+        <Grid.InputBindings>
+            <KeyBinding
+                Key="S"
+                Command="{Binding SaveStepsCommand}"
+                Modifiers="Control" />
+        </Grid.InputBindings>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
@@ -38,10 +45,25 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <!-- 保存済みの TextProcessingStep を表示するためのリスト -->
-            <ListBox Grid.Column="0" />
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
 
-            <ScrollViewer Grid.Column="1">
+            <Border
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="2">
+                <TextBlock Text="{Binding CurrentPresetFileName}" />
+            </Border>
+
+            <!-- 保存済みの TextProcessingStep を表示するためのリスト -->
+            <ListBox
+                Grid.Row="1"
+                Grid.Column="0"
+                ItemsSource="{Binding PresetFiles}" />
+
+            <ScrollViewer Grid.Row="1" Grid.Column="1">
                 <StackPanel>
 
                     <ItemsControl ItemsSource="{Binding TextProcessingSteps}">
