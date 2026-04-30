@@ -19,8 +19,8 @@ namespace TtsClient.ViewModels
         private readonly EditorPageViewModel editorPageViewModel;
         private string originalText;
         private string processedText;
-        private string currentPresetFileName = string.Empty;
-        private ObservableCollection<string> presetFiles = new ();
+        private FileInfo currentPresetFile;
+        private ObservableCollection<FileInfo> presetFiles = new ();
 
         public TextFormatPageViewModel()
         {
@@ -34,7 +34,7 @@ namespace TtsClient.ViewModels
             if (Directory.Exists(TextProcessingStepSerializer.DataDirectory))
             {
                 var files = Directory.GetFiles(TextProcessingStepSerializer.DataDirectory);
-                PresetFiles = new ObservableCollection<string>(files.Select(Path.GetFileName));
+                PresetFiles = new ObservableCollection<FileInfo>(files.Select(f => new FileInfo(f)));
             }
 
             SetupDebugData();
@@ -42,16 +42,16 @@ namespace TtsClient.ViewModels
 
         public ObservableCollection<TextProcessingStep> TextProcessingSteps { get; } = new ();
 
-        public ObservableCollection<string> PresetFiles
+        public ObservableCollection<FileInfo> PresetFiles
         {
             get => presetFiles;
             set => SetProperty(ref presetFiles, value);
         }
 
-        public string CurrentPresetFileName
+        public FileInfo CurrentPresetFile
         {
-            get => currentPresetFileName;
-            set => SetProperty(ref currentPresetFileName, value);
+            get => currentPresetFile;
+            set => SetProperty(ref currentPresetFile, value);
         }
 
         public string OriginalText { get => originalText; set => SetProperty(ref originalText, value); }
@@ -93,20 +93,28 @@ namespace TtsClient.ViewModels
             editorPageViewModel.PendingRequest.Text = ProcessedText;
         });
 
+        public AsyncRelayCommand<FileInfo> LoadStepsCommand => new (async (param) =>
+        {
+            var item = await TextProcessingStepSerializer.LoadAsync(param.FullName);
+            TextProcessingSteps.Clear();
+            TextProcessingSteps.AddRange(item);
+            CurrentPresetFile = param;
+        });
+
         public AsyncRelayCommand SaveStepsCommand => new (async () =>
         {
-            var targetFileName = DateTime.Now.ToString("yyyyMMdd_HHmmss");
-            if (!string.IsNullOrEmpty(CurrentPresetFileName))
+            var targetFileName = DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".json";
+            if (CurrentPresetFile != null)
             {
-                targetFileName = CurrentPresetFileName;
+                targetFileName = CurrentPresetFile.Name;
             }
 
-            await TextProcessingStepSerializer.SaveAsync(TextProcessingSteps, $"{targetFileName}.json");
+            await TextProcessingStepSerializer.SaveAsync(TextProcessingSteps, targetFileName);
 
             var files = Directory.GetFiles(TextProcessingStepSerializer.DataDirectory);
-            PresetFiles = new ObservableCollection<string>(files.Select(Path.GetFileName));
+            PresetFiles = new ObservableCollection<FileInfo>(files.Select(f => new FileInfo(f)));
 
-            CurrentPresetFileName = $"{targetFileName}.json";
+            CurrentPresetFile = new FileInfo(Path.Combine(TextProcessingStepSerializer.DataDirectory, targetFileName));
         });
 
         private void AddReplacementRule(TextProcessingStep param)
