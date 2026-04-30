@@ -27,5 +27,18 @@ namespace TtsClient.Utils
             var filePath = Path.Combine(DataDirectory, fileName);
             await File.WriteAllTextAsync(filePath, json);
         }
+
+        public static async Task<List<TextProcessingStep>> LoadAsync(string fileName)
+        {
+            var filePath = Path.Combine(DataDirectory, fileName);
+            if (!File.Exists(filePath))
+            {
+                return new List<TextProcessingStep>();
+            }
+
+            var json = await File.ReadAllTextAsync(filePath);
+            var steps = JsonSerializer.Deserialize<List<TextProcessingStep>>(json);
+            return steps ?? new List<TextProcessingStep>();
+        }
     }
 }
