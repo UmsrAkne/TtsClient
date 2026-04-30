@@ -9,7 +9,7 @@
     xmlns:viewModels="clr-namespace:TtsClient.ViewModels"
     d:DataContext="{d:DesignInstance viewModels:TextFormatPageViewModel}"
     d:DesignHeight="400"
-    d:DesignWidth="300"
+    d:DesignWidth="800"
     mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -32,121 +32,132 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <ScrollViewer Grid.Row="1">
-            <StackPanel>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
 
-                <ItemsControl ItemsSource="{Binding TextProcessingSteps}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate DataType="{x:Type texts:TextProcessingStep}">
-                            <StackPanel>
-                                <StackPanel Margin="3" Orientation="Horizontal">
-                                    <CheckBox
-                                        Margin="5,0"
-                                        VerticalAlignment="Center"
-                                        IsChecked="{Binding IsSingleLine}" />
-                                    <TextBlock FontSize="{StaticResource CommonFontSize}" Text="Dot matches all (SingleLine)" />
-                                </StackPanel>
+            <!-- 保存済みの TextProcessingStep を表示するためのリスト -->
+            <ListBox Grid.Column="0" />
 
-                                <DockPanel LastChildFill="True">
+            <ScrollViewer Grid.Column="1">
+                <StackPanel>
+
+                    <ItemsControl ItemsSource="{Binding TextProcessingSteps}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type texts:TextProcessingStep}">
+                                <StackPanel>
+                                    <StackPanel Margin="3" Orientation="Horizontal">
+                                        <CheckBox
+                                            Margin="5,0"
+                                            VerticalAlignment="Center"
+                                            IsChecked="{Binding IsSingleLine}" />
+                                        <TextBlock FontSize="{StaticResource CommonFontSize}" Text="Dot matches all (SingleLine)" />
+                                    </StackPanel>
+
+                                    <DockPanel LastChildFill="True">
+                                        <Button
+                                            Margin="5,0,0,0"
+                                            Padding="2"
+                                            HorizontalAlignment="Right"
+                                            Command="{Binding DataContext.RemoveStepCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}"
+                                            DockPanel.Dock="Right">
+                                            <TextBlock FontSize="{StaticResource CommonFontSize}" Text="Delete" />
+                                        </Button>
+                                        <TextBlock
+                                            Width="80"
+                                            FontSize="{StaticResource CommonFontSize}"
+                                            Text="Caption :" />
+                                        <TextBox FontSize="{StaticResource CommonFontSize}" Text="{Binding ExtractionPattern}" />
+                                    </DockPanel>
+
+                                    <ItemsControl ItemsSource="{Binding ReplacementRules}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate DataType="{x:Type texts:ReplacementRule}">
+
+                                                <DataTemplate.Resources>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="FontSize" Value="{StaticResource CommonFontSize}" />
+                                                    </Style>
+
+                                                    <Style TargetType="TextBox">
+                                                        <Setter Property="FontSize" Value="{StaticResource CommonFontSize}" />
+                                                        <Setter Property="Background" Value="{StaticResource TextBoxBackground}" />
+                                                        <Setter Property="Margin" Value="5,0" />
+                                                        <Setter Property="Width" Value="150" />
+                                                    </Style>
+                                                </DataTemplate.Resources>
+
+                                                <StackPanel Margin="25,2" Orientation="Horizontal">
+                                                    <DockPanel Margin="2">
+                                                        <TextBlock Text="Pattern:" />
+                                                        <TextBox Text="{Binding Pattern}" />
+                                                    </DockPanel>
+
+                                                    <Border Width="40" />
+
+                                                    <DockPanel Margin="2">
+                                                        <TextBlock Text="Replacement:" />
+                                                        <TextBox Text="{Binding Replacement}" />
+                                                    </DockPanel>
+
+                                                    <Button
+                                                        Margin="10,0,0,0"
+                                                        Padding="2"
+                                                        HorizontalAlignment="Left"
+                                                        Command="{Binding DataContext.RemoveReplacementRuleCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        CommandParameter="{Binding}">
+                                                        <TextBlock FontSize="{StaticResource CommonFontSize}" Text="Delete" />
+                                                    </Button>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+
                                     <Button
-                                        Margin="5,0,0,0"
+                                        Width="200"
+                                        Margin="25,0"
                                         Padding="2"
-                                        HorizontalAlignment="Right"
-                                        Command="{Binding DataContext.RemoveStepCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                        CommandParameter="{Binding}"
-                                        DockPanel.Dock="Right">
-                                        <TextBlock FontSize="{StaticResource CommonFontSize}" Text="Delete" />
+                                        HorizontalAlignment="Left"
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ItemsControl}, Path=DataContext.AddReplacementRuleCommand}"
+                                        CommandParameter="{Binding}">
+                                        <Button.Content>
+                                            <TextBlock FontSize="{StaticResource CommonFontSize}" Text="Add replacement" />
+                                        </Button.Content>
                                     </Button>
-                                    <TextBlock
-                                        Width="80"
-                                        FontSize="{StaticResource CommonFontSize}"
-                                        Text="Caption :" />
-                                    <TextBox FontSize="{StaticResource CommonFontSize}" Text="{Binding ExtractionPattern}" />
-                                </DockPanel>
 
-                                <ItemsControl ItemsSource="{Binding ReplacementRules}">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate DataType="{x:Type texts:ReplacementRule}">
+                                    <Border
+                                        Height="1.5"
+                                        Margin="0,5,0,0"
+                                        Background="{StaticResource CommonBorderBrush}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
 
-                                            <DataTemplate.Resources>
-                                                <Style TargetType="TextBlock">
-                                                    <Setter Property="FontSize" Value="{StaticResource CommonFontSize}" />
-                                                </Style>
+                        <ItemsControl.ItemContainerStyle>
+                            <Style TargetType="ContentPresenter">
+                                <Setter Property="Margin" Value="4" />
+                            </Style>
+                        </ItemsControl.ItemContainerStyle>
+                    </ItemsControl>
 
-                                                <Style TargetType="TextBox">
-                                                    <Setter Property="FontSize" Value="{StaticResource CommonFontSize}" />
-                                                    <Setter Property="Background" Value="{StaticResource TextBoxBackground}" />
-                                                    <Setter Property="Margin" Value="5,0" />
-                                                    <Setter Property="Width" Value="150" />
-                                                </Style>
-                                            </DataTemplate.Resources>
+                    <Button
+                        Width="200"
+                        Margin="4"
+                        Padding="2"
+                        HorizontalAlignment="Left"
+                        Command="{Binding AddStepCommand}">
+                        <Button.Content>
+                            <TextBlock Text="Add item" />
+                        </Button.Content>
+                    </Button>
 
-                                            <StackPanel Margin="25,2" Orientation="Horizontal">
-                                                <DockPanel Margin="2">
-                                                    <TextBlock Text="Pattern:" />
-                                                    <TextBox Text="{Binding Pattern}" />
-                                                </DockPanel>
+                </StackPanel>
+            </ScrollViewer>
 
-                                                <Border Width="40" />
-
-                                                <DockPanel Margin="2">
-                                                    <TextBlock Text="Replacement:" />
-                                                    <TextBox Text="{Binding Replacement}" />
-                                                </DockPanel>
-
-                                                <Button
-                                                    Margin="10,0,0,0"
-                                                    Padding="2"
-                                                    HorizontalAlignment="Left"
-                                                    Command="{Binding DataContext.RemoveReplacementRuleCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                    CommandParameter="{Binding}">
-                                                    <TextBlock FontSize="{StaticResource CommonFontSize}" Text="Delete" />
-                                                </Button>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-
-                                <Button
-                                    Width="200"
-                                    Margin="25,0"
-                                    Padding="2"
-                                    HorizontalAlignment="Left"
-                                    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ItemsControl}, Path=DataContext.AddReplacementRuleCommand}"
-                                    CommandParameter="{Binding}">
-                                    <Button.Content>
-                                        <TextBlock FontSize="{StaticResource CommonFontSize}" Text="Add replacement" />
-                                    </Button.Content>
-                                </Button>
-
-                                <Border
-                                    Height="1.5"
-                                    Margin="0,5,0,0"
-                                    Background="{StaticResource CommonBorderBrush}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-
-                    <ItemsControl.ItemContainerStyle>
-                        <Style TargetType="ContentPresenter">
-                            <Setter Property="Margin" Value="4" />
-                        </Style>
-                    </ItemsControl.ItemContainerStyle>
-                </ItemsControl>
-
-                <Button
-                    Width="200"
-                    Margin="4"
-                    Padding="2"
-                    HorizontalAlignment="Left"
-                    Command="{Binding AddStepCommand}">
-                    <Button.Content>
-                        <TextBlock Text="Add item" />
-                    </Button.Content>
-                </Button>
-
-            </StackPanel>
-        </ScrollViewer>
+        </Grid>
 
         <Border Grid.Row="2" Margin="5">
             <Button
