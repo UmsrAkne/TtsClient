@@ -2,6 +2,8 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.Input;
 using Prism.Commands;
 using Prism.Mvvm;
 using TtsClient.Texts;
@@ -66,6 +68,12 @@ namespace TtsClient.ViewModels
         public DelegateCommand CopyToEditorPanelCommand => new DelegateCommand(() =>
         {
             editorPageViewModel.PendingRequest.Text = ProcessedText;
+        });
+
+        public AsyncRelayCommand SaveStepsCommand => new (async () =>
+        {
+            var dt = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+            await TextProcessingStepSerializer.SaveAsync(TextProcessingSteps, dt);
         });
 
         private void AddReplacementRule(TextProcessingStep param)
