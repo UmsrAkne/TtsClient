@@ -1,13 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace TtsClient.Models
 {
     public class SpeechMetadata
     {
-        public string Language { get; set; } = string.Empty;
+        [Key]
+        public Guid Id { get; set; } = Guid.NewGuid();
 
-        public string VoiceName { get; set; } = string.Empty;
+        public string Key { get; set; } = string.Empty;
 
-        public Dictionary<string, string> Tags { get; set; } = new();
+        public string Value { get; set; } = string.Empty;
+
+        [Required]
+        public Guid SpeechEntryId { get; set; }
     }
 }
