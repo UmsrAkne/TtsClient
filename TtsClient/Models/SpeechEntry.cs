@@ -10,9 +10,14 @@ namespace TtsClient.Models
         public Guid Id { get; set; }
 
         /// <summary>
-        /// ユーザーが入力した「生のテキスト」
+        /// 読み上げるテキスト
         /// </summary>
-        public string RawText { get; set; } = string.Empty;
+        public string Contents { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 文章のタイトル
+        /// </summary>
+        public string Title { get; set; } = string.Empty;
 
         /// <summary>
         /// 実際に送信したSSML（または最終プロンプト）
@@ -33,5 +38,7 @@ namespace TtsClient.Models
         /// 生成日時（ファイルの作成日とは別）
         /// </summary>
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
+
+        public SpeechMetadata SpeechMetadata { get; set; }
     }
 }

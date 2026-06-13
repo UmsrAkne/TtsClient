@@ -25,7 +25,7 @@ namespace TtsClient.Databases
             var entry = new SpeechEntry
             {
                 Id = Guid.NewGuid(),
-                RawText = rawText,
+                Contents = rawText,
                 AudioPath = audioPath,
                 CreatedAt = DateTimeOffset.Now,
             };
