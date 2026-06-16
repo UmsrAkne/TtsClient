@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using CommunityToolkit.Mvvm.Input;
 using Prism.Mvvm;
 using TtsClient.Databases;
@@ -22,6 +23,18 @@ namespace TtsClient.ViewModels
         public AsyncRelayCommand LoadFromDbAsyncCommand =>
             loadFromDbCommand ??= new AsyncRelayCommand(async () =>
             {
+                var l = SpeechEntries.MaxBy(s => s.CreatedAt);
+                if (l != null)
+                {
+                    var additionRecords = await speechService.GetSpeechEntries(l.CreatedAt);
+                    foreach (var additionRecord in additionRecords)
+                    {
+                        SpeechEntries.Insert(0, additionRecord);
+                    }
+
+                    return;
+                }
+
                 SpeechEntries.Clear();
                 SpeechEntries.AddRange(await speechService.GetHistoryAsync());
             });

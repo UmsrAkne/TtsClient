@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TtsClient.Models;
@@ -22,6 +23,13 @@ namespace TtsClient.Databases
             var entries = await repository.GetAllAsync();
             return entries.OrderByDescending(s => s.CreatedAt)
                 .Take(limit);
+        }
+
+        public async Task<IEnumerable<SpeechEntry>> GetSpeechEntries(DateTimeOffset fromDate)
+        {
+            var entries = await repository.GetAllAsync();
+            entries = entries.Where(s => s.CreatedAt > fromDate);
+            return entries.OrderBy(s => s.CreatedAt);
         }
 
         public async Task RegisterEntryAsync(SpeechEntry entry)
