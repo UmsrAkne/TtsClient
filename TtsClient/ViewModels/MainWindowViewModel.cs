@@ -68,7 +68,7 @@ public class MainWindowViewModel : BindableBase
         {
             ExplorerPageViewModel.SpeechEntries.Add(new SpeechEntry()
             {
-                AudioPath = $"test_{i:000}.mp3",
+                AudioRelativePath = $"test_{i:000}.mp3",
             });
         }
     }

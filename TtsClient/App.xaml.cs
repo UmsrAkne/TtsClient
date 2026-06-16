@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
+using Microsoft.EntityFrameworkCore;
+using Prism.DryIoc;
 using Prism.Ioc;
 using TtsClient.Databases;
 using TtsClient.TtsEngine;
@@ -23,9 +26,11 @@ public partial class App
         containerRegistry.RegisterSingleton<EditorPageViewModel>();
         containerRegistry.Register<ExplorerPageViewModel>();
         containerRegistry.Register<TextFormatPageViewModel>();
+        containerRegistry.Register<MyDbContext>();
 
         containerRegistry.RegisterSingleton<SpeechService>();
-        containerRegistry.RegisterSingleton<ISpeechRepository, JsonSpeechRepository>();
+        containerRegistry.RegisterSingleton<ISpeechRepository, SpeechRepository>();
+        containerRegistry.RegisterSingleton<ISpeechMetadataRepository, SpeechMetadataRepository>();
 
         containerRegistry.RegisterSingleton<ITtsEngine, DummyTtsEngine>();
         containerRegistry.RegisterSingleton<ITtsEngine, GoogleTtsEngine>();
@@ -36,5 +41,22 @@ public partial class App
         Logger.Initialize(PathHelper.GetApplicationDirectory());
 
         base.OnStartup(e);
+    }
+
+    protected override void OnInitialized()
+    {
+        // DIコンテナから MyDbContext を取り出して EnsureCreated を実行する
+        using var context = Container.Resolve<MyDbContext>();
+
+        #if DEBUG
+        if (AppSettings.Load(AppSettings.SettingFilePath).DatabaseClearEnabled)
+        {
+            Console.WriteLine("設定ファイルの指定によりデータベースを初期化しました。( App.OnInitialized )");
+            context.Database.EnsureDeleted();
+        }
+        #endif
+
+        context.Database.EnsureCreated();
+        base.OnInitialized();
     }
 }

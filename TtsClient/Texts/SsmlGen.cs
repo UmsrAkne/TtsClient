@@ -6,5 +6,13 @@
         {
             return @"<speak> <google:style name=""lively""> <prosody pitch=""-2st"" rate=""90%"" > " + text + "</prosody> </google:style> </speak>";
         }
+
+        public string GetSsmlTextWithTitleCall(string title, string text)
+        {
+            return @"<speak> <google:style name=""lively""> <prosody pitch=""-2st"" rate=""90%""> "
+                   + @"タイトル、<emphasis level=""strong"">" + title + "</emphasis>。"
+                   + text
+                   + "</prosody> </google:style> </speak>";
+        }
     }
 }

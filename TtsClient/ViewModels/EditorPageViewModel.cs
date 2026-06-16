@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using CommunityToolkit.Mvvm.Input;
 using Prism.Mvvm;
 using TtsClient.Databases;
+using TtsClient.Models;
+using TtsClient.Services;
 using TtsClient.Texts;
 using TtsClient.TtsEngine;
 using TtsClient.Utils;
@@ -15,6 +18,7 @@ namespace TtsClient.ViewModels
     {
         private readonly SsmlGen ssmlGen = new ();
         private readonly SpeechService speechService;
+        private readonly YamlSpeechParser yamlSpeechParser = new ();
         private TtsRequest pendingRequest = new ();
 
         public EditorPageViewModel(TtsService ttsService, SpeechService speechService)
@@ -34,18 +38,36 @@ namespace TtsClient.ViewModels
 
         public AsyncRelayCommand SendRequestCommand => new (async () =>
         {
+            var results = yamlSpeechParser.Parse(PendingRequest.Text);
+            var entry = new SpeechEntry()
+            {
+                Title = results.Title,
+                Contents = results.Contents,
+            };
+
             var req = new TtsRequest
             {
-                Text = ssmlGen.SurroundProsody(PendingRequest.Text),
+                Text = ssmlGen.GetSsmlTextWithTitleCall(entry.Title, entry.Contents),
                 Voice = "ja-JP-Wavenet-D",
             };
 
             var byteArray = await TtsService.SynthesizeAsync(req);
             var fileName = $"{DateTime.Now.ToString($"yyyyMMdd_HHmmss_fff")}.mp3";
-            var path = Path.Combine(PathHelper.GetTtsAudioDirectoryPath(), fileName);
+            var path = Path.Combine(PathHelper.AudioDirectoryName, fileName);
 
+            entry.ProcessedSsml = req.Text;
+            entry.AudioRelativePath = path;
             await File.WriteAllBytesAsync(path, byteArray);
-            await speechService.RegisterEntryAsync(req.Text, path);
+            await speechService.RegisterEntryAsync(entry);
+
+            var metadataList = results.Metadata.Select(kv => new SpeechMetadata()
+            {
+                Key = kv.Key,
+                Value = kv.Value,
+                SpeechEntryId = entry.Id,
+            });
+
+            await speechService.RegisterMetadataRangeAsync(metadataList);
         });
 
         [Conditional("DEBUG")]
