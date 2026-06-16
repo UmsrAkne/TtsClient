@@ -28,13 +28,13 @@ namespace TtsClient.Models
         /// 実際に送信したSSML（または最終プロンプト）
         /// </summary>
         [Required]
-        public string ProcessedSsml { get; set; }
+        public string ProcessedSsml { get; set; } = string.Empty;
 
         /// <summary>
         /// 生成された音声ファイルへのパス（プロジェクトルートからの相対指定を考慮）
         /// </summary>
         [Required]
-        public string AudioPath { get; set; }
+        public string AudioPath { get; set; } = string.Empty;
 
         /// <summary>
         /// 生成待ち/完了/エラー
