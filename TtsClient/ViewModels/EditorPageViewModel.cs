@@ -53,9 +53,9 @@ namespace TtsClient.ViewModels
 
             var byteArray = await TtsService.SynthesizeAsync(req);
             var fileName = $"{DateTime.Now.ToString($"yyyyMMdd_HHmmss_fff")}.mp3";
-            var path = Path.Combine(PathHelper.GetTtsAudioDirectoryPath(), fileName);
+            var path = Path.Combine(PathHelper.AudioDirectoryName, fileName);
 
-            entry.AudioPath = path;
+            entry.AudioRelativePath = path;
             await File.WriteAllBytesAsync(path, byteArray);
             await speechService.RegisterEntryAsync(entry);
 

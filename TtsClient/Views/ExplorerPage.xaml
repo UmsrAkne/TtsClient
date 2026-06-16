@@ -42,7 +42,7 @@
                     </DataTemplate.Resources>
 
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding AudioPath}" />
+                        <TextBlock Text="{Binding AudioRelativePath}" />
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

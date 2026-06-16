@@ -31,10 +31,10 @@ namespace TtsClient.Models
         public string ProcessedSsml { get; set; } = string.Empty;
 
         /// <summary>
-        /// 生成された音声ファイルへのパス（プロジェクトルートからの相対指定を考慮）
+        /// 生成された音声ファイルへ相対パス。 例：　Audios\20260616_192727_659.mp3
         /// </summary>
         [Required]
-        public string AudioPath { get; set; } = string.Empty;
+        public string AudioRelativePath { get; set; } = string.Empty;
 
         /// <summary>
         /// 生成待ち/完了/エラー
