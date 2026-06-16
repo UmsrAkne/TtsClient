@@ -48,8 +48,11 @@ public partial class App
         using var context = Container.Resolve<MyDbContext>();
 
         #if DEBUG
-        // デバッグ起動時のみ、毎回DBをリセットして初期化する
-        context.Database.EnsureDeleted();
+        if (AppSettings.Load(AppSettings.SettingFilePath).DatabaseClearEnabled)
+        {
+            Console.WriteLine("設定ファイルの指定によりデータベースを初期化しました。( App.OnInitialized )");
+            context.Database.EnsureDeleted();
+        }
         #endif
 
         context.Database.EnsureCreated();
