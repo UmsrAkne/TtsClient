@@ -47,7 +47,7 @@ namespace TtsClient.ViewModels
 
             var req = new TtsRequest
             {
-                Text = ssmlGen.SurroundProsody(PendingRequest.Text),
+                Text = ssmlGen.GetSsmlTextWithTitleCall(entry.Title, entry.Contents),
                 Voice = "ja-JP-Wavenet-D",
             };
 
@@ -55,6 +55,7 @@ namespace TtsClient.ViewModels
             var fileName = $"{DateTime.Now.ToString($"yyyyMMdd_HHmmss_fff")}.mp3";
             var path = Path.Combine(PathHelper.AudioDirectoryName, fileName);
 
+            entry.ProcessedSsml = req.Text;
             entry.AudioRelativePath = path;
             await File.WriteAllBytesAsync(path, byteArray);
             await speechService.RegisterEntryAsync(entry);
