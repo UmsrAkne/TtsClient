@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.Input;
 using Prism.Mvvm;
 using TtsClient.Databases;
 using TtsClient.Models;
@@ -9,6 +10,7 @@ namespace TtsClient.ViewModels
     public class ExplorerPageViewModel : BindableBase
     {
         private readonly SpeechService speechService;
+        private AsyncRelayCommand loadFromDbCommand;
 
         public ExplorerPageViewModel(SpeechService speechService)
         {
@@ -16,5 +18,12 @@ namespace TtsClient.ViewModels
         }
 
         public ObservableCollection<SpeechEntry> SpeechEntries { get; } = new ();
+
+        public AsyncRelayCommand LoadFromDbAsyncCommand =>
+            loadFromDbCommand ??= new AsyncRelayCommand(async () =>
+            {
+                SpeechEntries.Clear();
+                SpeechEntries.AddRange(await speechService.GetHistoryAsync());
+            });
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TtsClient.Models;
 
@@ -16,9 +17,11 @@ namespace TtsClient.Databases
             this.metadataRepository = metadataRepository;
         }
 
-        public async Task<IEnumerable<SpeechEntry>> GetHistoryAsync()
+        public async Task<IEnumerable<SpeechEntry>> GetHistoryAsync(int limit = 500)
         {
-            return await repository.GetAllAsync();
+            var entries = await repository.GetAllAsync();
+            return entries.OrderByDescending(s => s.CreatedAt)
+                .Take(limit);
         }
 
         public async Task RegisterEntryAsync(SpeechEntry entry)
