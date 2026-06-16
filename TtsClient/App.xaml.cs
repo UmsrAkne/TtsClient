@@ -30,6 +30,7 @@ public partial class App
 
         containerRegistry.RegisterSingleton<SpeechService>();
         containerRegistry.RegisterSingleton<ISpeechRepository, SpeechRepository>();
+        containerRegistry.RegisterSingleton<ISpeechMetadataRepository, SpeechMetadataRepository>();
 
         containerRegistry.RegisterSingleton<ITtsEngine, DummyTtsEngine>();
         containerRegistry.RegisterSingleton<ITtsEngine, GoogleTtsEngine>();

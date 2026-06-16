@@ -5,6 +5,10 @@ namespace TtsClient.Utils
 {
     public static class PathHelper
     {
+        /// <summary>
+        /// オーディオディレクトリーのフルパスを取得します。
+        /// </summary>
+        /// <returns>オーディオディレクトリーのフルパス。</returns>
         public static string GetTtsAudioDirectoryPath()
         {
             var baseDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Audios");
