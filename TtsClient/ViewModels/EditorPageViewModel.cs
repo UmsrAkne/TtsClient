@@ -47,7 +47,7 @@ namespace TtsClient.ViewModels
 
             var req = new TtsRequest
             {
-                Text = ssmlGen.GetSsmlTextWithTitleCall(entry.Title, entry.Contents),
+                Text = TtsService.GetSsmlTextWithTitleCall(entry.Title, entry.Contents),
                 Voice = "ja-JP-Wavenet-D",
             };
 

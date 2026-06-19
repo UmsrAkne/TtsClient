@@ -22,5 +22,10 @@ namespace TtsClient.TtsEngine
             // 現在のエンジンに処理を委譲（デリゲート）する
             return CurrentEngine.SynthesizeAsync(request);
         }
+
+        public string GetSsmlTextWithTitleCall(string entryTitle, string entryContents)
+        {
+            return CurrentEngine.GenerateSsmlText(entryTitle, entryContents);
+        }
     }
 }

@@ -7,5 +7,7 @@ namespace TtsClient.TtsEngine
         public string EngineName { get; }
 
         Task<byte[]> SynthesizeAsync(TtsRequest request);
+
+        string GenerateSsmlText(string entryTitle, string entryContents);
     }
 }

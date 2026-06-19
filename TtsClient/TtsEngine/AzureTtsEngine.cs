@@ -47,5 +47,17 @@ namespace TtsClient.TtsEngine
 
             return Array.Empty<byte>();
         }
+
+        public string GenerateSsmlText(string title, string text)
+        {
+            return @"<speak version=""1.0"" xmlns=""http://www.w3.org/2001/10/synthesis"" xmlns:mstts=""http://www.w3.org/2001/mstts"" xml:lang=""ja-JP"">"
+                   + @"<voice name=""ja-JP-NaokiNeural"">"
+                   + @"<prosody rate=""-5%"">"
+                   + @"タイトル、<emphasis level=""strong"">" + title + "</emphasis>。"
+                   + text
+                   + "</prosody>"
+                   + "</voice>"
+                   + "</speak>";
+        }
     }
 }
