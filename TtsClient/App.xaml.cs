@@ -34,6 +34,7 @@ public partial class App
 
         containerRegistry.RegisterSingleton<ITtsEngine, DummyTtsEngine>();
         containerRegistry.RegisterSingleton<ITtsEngine, GoogleTtsEngine>();
+        containerRegistry.RegisterSingleton<ITtsEngine, AzureTtsEngine>();
     }
 
     protected override void OnStartup(StartupEventArgs e)
