@@ -55,5 +55,13 @@ namespace TtsClient.TtsEngine
                 ? Convert.FromBase64String(base64)
                 : Array.Empty<byte>();
         }
+
+        public string GenerateSsmlText(string entryTitle, string entryContents, string titleCall)
+        {
+            return @"<speak> <google:style name=""lively""> <prosody pitch=""-2st"" rate=""90%""> "
+                   + titleCall + "、" + @"<emphasis level=""strong"">" + entryTitle + "</emphasis>。"
+                   + entryContents
+                   + "</prosody> </google:style> </speak>";
+        }
     }
 }
