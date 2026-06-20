@@ -8,6 +8,6 @@ namespace TtsClient.TtsEngine
 
         Task<byte[]> SynthesizeAsync(TtsRequest request);
 
-        string GenerateSsmlText(string entryTitle, string entryContents);
+        string GenerateSsmlText(string entryTitle, string entryContents, string titleCall);
     }
 }

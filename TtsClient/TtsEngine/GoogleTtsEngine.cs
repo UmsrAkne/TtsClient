@@ -56,10 +56,10 @@ namespace TtsClient.TtsEngine
                 : Array.Empty<byte>();
         }
 
-        public string GenerateSsmlText(string entryTitle, string entryContents)
+        public string GenerateSsmlText(string entryTitle, string entryContents, string titleCall)
         {
             return @"<speak> <google:style name=""lively""> <prosody pitch=""-2st"" rate=""90%""> "
-                   + @"タイトル、<emphasis level=""strong"">" + entryTitle + "</emphasis>。"
+                   + titleCall + "、" + @"<emphasis level=""strong"">" + entryTitle + "</emphasis>。"
                    + entryContents
                    + "</prosody> </google:style> </speak>";
         }

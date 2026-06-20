@@ -23,9 +23,9 @@ namespace TtsClient.TtsEngine
             return CurrentEngine.SynthesizeAsync(request);
         }
 
-        public string GetSsmlTextWithTitleCall(string entryTitle, string entryContents)
+        public string GetSsmlTextWithTitleCall(string entryTitle, string entryContents, string titleCall = "")
         {
-            return CurrentEngine.GenerateSsmlText(entryTitle, entryContents);
+            return CurrentEngine.GenerateSsmlText(entryTitle, entryContents, titleCall);
         }
     }
 }

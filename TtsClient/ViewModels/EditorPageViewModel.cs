@@ -45,9 +45,12 @@ namespace TtsClient.ViewModels
                 Contents = results.Contents,
             };
 
+            var titleCall = results.Metadata.FirstOrDefault(kv => kv.Key == "TitleCall").Value;
+            titleCall = string.IsNullOrWhiteSpace(titleCall) ? string.Empty : titleCall;
+
             var req = new TtsRequest
             {
-                Text = TtsService.GetSsmlTextWithTitleCall(entry.Title, entry.Contents),
+                Text = TtsService.GetSsmlTextWithTitleCall(entry.Title, entry.Contents, titleCall),
                 Voice = "ja-JP-Wavenet-D",
             };
 

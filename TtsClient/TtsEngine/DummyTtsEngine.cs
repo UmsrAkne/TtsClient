@@ -24,7 +24,7 @@ namespace TtsClient.TtsEngine
             return new byte[] { 0x49, 0x44, 0x33, 0x03, 0x00, }; // ダミーの MP3 ヘッダー風データ
         }
 
-        public string GenerateSsmlText(string entryTitle, string entryContents)
+        public string GenerateSsmlText(string entryTitle, string entryContents, string titleCall)
         {
             throw new NotImplementedException();
         }
