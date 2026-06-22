@@ -54,7 +54,7 @@ namespace TtsClient.ViewModels
                 Voice = "ja-JP-Wavenet-D",
             };
 
-            var now = DateTime.Now;
+            var now = DateTimeOffset.Now;
             var dateDirName = now.ToString("yyyy-MM-dd");
 
             var byteArray = await TtsService.SynthesizeAsync(req);
@@ -63,10 +63,19 @@ namespace TtsClient.ViewModels
             var absoluteDirPath = Path.Combine(AppContext.BaseDirectory, PathHelper.AudioDirectoryName, dateDirName);
             Directory.CreateDirectory(absoluteDirPath);
 
-            // entry.ProcessedSsml = req.Text;
-            // entry.AudioRelativePath = path;
             await File.WriteAllBytesAsync(Path.Combine(absoluteDirPath, fileName), byteArray);
             await speechService.RegisterEntryAsync(entry);
+
+            var audioFileEntry = new AudioFileEntry
+            {
+                SpeechEntryId = entry.Id,
+                AudioRelativePath = path,
+                ProcessedSsml = req.Text,
+                Status = SpeechEntryStatus.Pending,
+                GeneratedAt = now,
+            };
+
+            await speechService.RegisterAudioFileEntryAsync(audioFileEntry);
 
             var metadataList = results.Metadata.Select(kv => new SpeechMetadata()
             {

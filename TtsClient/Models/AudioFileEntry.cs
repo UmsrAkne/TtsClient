@@ -36,11 +36,6 @@ namespace TtsClient.Models
         [Required]
         public DateTimeOffset GeneratedAt { get; set; } = DateTimeOffset.Now;
 
-        /// <summary>
-        /// 複数ある音声のうち、現在アプリで「本番用・お気に入り」として使うものかどうかのフラグ
-        /// </summary>
-        public bool IsActive { get; set; } = false;
-
         // ナビゲーションプロパティ：この音声ファイルの生成パラメーター（話者、速度など）
         public List<AudioMetadata> Metadata { get; set; } = new();
     }

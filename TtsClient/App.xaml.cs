@@ -45,6 +45,9 @@ public partial class App
         containerRegistry.RegisterSingleton<ISpeechRepository, SpeechRepository>();
         containerRegistry.RegisterSingleton<ISpeechMetadataRepository, SpeechMetadataRepository>();
 
+        containerRegistry.RegisterSingleton<IAudioFileEntryRepository, AudioFileEntryRepository>();
+        containerRegistry.RegisterSingleton<IAudioMetadataRepository, AudioMetadataRepository>();
+
         containerRegistry.RegisterSingleton<ITtsEngine, DummyTtsEngine>();
         containerRegistry.RegisterSingleton<ITtsEngine, GoogleTtsEngine>();
         containerRegistry.RegisterSingleton<ITtsEngine, AzureTtsEngine>();

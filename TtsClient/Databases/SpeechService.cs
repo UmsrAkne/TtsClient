@@ -10,12 +10,20 @@ namespace TtsClient.Databases
     {
         private readonly ISpeechRepository repository;
         private readonly ISpeechMetadataRepository metadataRepository;
+        private readonly IAudioFileEntryRepository audioFileEntryRepository;
+        private readonly IAudioMetadataRepository audioMetadataRepository;
 
         // コンストラクタでリポジトリを注入（DI）
-        public SpeechService(ISpeechRepository repository, ISpeechMetadataRepository metadataRepository)
+        public SpeechService(
+            ISpeechRepository repository,
+            ISpeechMetadataRepository metadataRepository,
+            IAudioFileEntryRepository audioFileEntryRepository,
+            IAudioMetadataRepository audioMetadataRepository)
         {
             this.repository = repository;
             this.metadataRepository = metadataRepository;
+            this.audioFileEntryRepository = audioFileEntryRepository;
+            this.audioMetadataRepository = audioMetadataRepository;
         }
 
         public async Task<IEnumerable<SpeechEntry>> GetHistoryAsync(int limit = 500)
@@ -46,6 +54,12 @@ namespace TtsClient.Databases
             }
 
             await metadataRepository.SaveAsync();
+        }
+
+        public async Task RegisterAudioFileEntryAsync(AudioFileEntry entry)
+        {
+            await audioFileEntryRepository.AddAsync(entry);
+            await audioFileEntryRepository.SaveAsync();
         }
     }
 }
