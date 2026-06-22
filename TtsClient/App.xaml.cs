@@ -18,6 +18,19 @@ public partial class App
 {
     protected override Window CreateShell()
     {
+        // DIコンテナから MyDbContext を取り出して EnsureCreated を実行する
+        using var context = Container.Resolve<MyDbContext>();
+
+        #if DEBUG
+        if (AppSettings.Load(AppSettings.SettingFilePath).DatabaseClearEnabled)
+        {
+            Console.WriteLine("設定ファイルの指定によりデータベースを初期化しました。( App.OnInitialized )");
+            context.Database.EnsureDeleted();
+        }
+        #endif
+
+        context.Database.EnsureCreated();
+
         return Container.Resolve<MainWindow>();
     }
 
@@ -42,22 +55,5 @@ public partial class App
         Logger.Initialize(PathHelper.GetApplicationDirectory());
 
         base.OnStartup(e);
-    }
-
-    protected override void OnInitialized()
-    {
-        // DIコンテナから MyDbContext を取り出して EnsureCreated を実行する
-        using var context = Container.Resolve<MyDbContext>();
-
-        #if DEBUG
-        if (AppSettings.Load(AppSettings.SettingFilePath).DatabaseClearEnabled)
-        {
-            Console.WriteLine("設定ファイルの指定によりデータベースを初期化しました。( App.OnInitialized )");
-            context.Database.EnsureDeleted();
-        }
-        #endif
-
-        context.Database.EnsureCreated();
-        base.OnInitialized();
     }
 }
