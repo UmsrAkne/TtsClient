@@ -26,7 +26,7 @@ namespace TtsClient.TtsEngine
 
         public string GenerateSsmlText(string entryTitle, string entryContents, string titleCall)
         {
-            throw new NotImplementedException();
+            return entryTitle + Environment.NewLine + entryContents + Environment.NewLine + titleCall;
         }
     }
 }
