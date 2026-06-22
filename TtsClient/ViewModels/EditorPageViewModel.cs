@@ -63,8 +63,8 @@ namespace TtsClient.ViewModels
             var absoluteDirPath = Path.Combine(AppContext.BaseDirectory, PathHelper.AudioDirectoryName, dateDirName);
             Directory.CreateDirectory(absoluteDirPath);
 
-            entry.ProcessedSsml = req.Text;
-            entry.AudioRelativePath = path;
+            // entry.ProcessedSsml = req.Text;
+            // entry.AudioRelativePath = path;
             await File.WriteAllBytesAsync(Path.Combine(absoluteDirPath, fileName), byteArray);
             await speechService.RegisterEntryAsync(entry);
 

@@ -64,12 +64,12 @@ public class MainWindowViewModel : BindableBase
     [Conditional("DEBUG")]
     private void SetupDebugData()
     {
-        for (var i = 0; i < 50; i++)
-        {
-            ExplorerPageViewModel.SpeechEntries.Add(new SpeechEntry()
-            {
-                AudioRelativePath = $"test_{i:000}.mp3",
-            });
-        }
+        // for (var i = 0; i < 50; i++)
+        // {
+        //     ExplorerPageViewModel.SpeechEntries.Add(new SpeechEntry()
+        //     {
+        //         AudioRelativePath = $"test_{i:000}.mp3",
+        //     });
+        // }
     }
 }

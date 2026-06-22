@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TtsClient.Models
 {
@@ -23,24 +22,6 @@ namespace TtsClient.Models
         /// </summary>
         [Required]
         public string Title { get; set; } = string.Empty;
-
-        /// <summary>
-        /// 実際に送信したSSML（または最終プロンプト）
-        /// </summary>
-        [Required]
-        public string ProcessedSsml { get; set; } = string.Empty;
-
-        /// <summary>
-        /// 生成された音声ファイルへ相対パス。 例：　Audios\20260616_192727_659.mp3
-        /// </summary>
-        [Required]
-        public string AudioRelativePath { get; set; } = string.Empty;
-
-        /// <summary>
-        /// 生成待ち/完了/エラー
-        /// </summary>
-        [Required]
-        public SpeechEntryStatus Status { get; set; } = SpeechEntryStatus.Pending;
 
         /// <summary>
         /// 生成日時（ファイルの作成日とは別）
