@@ -12,6 +12,7 @@ namespace TtsClient.ViewModels
     {
         private readonly SpeechService speechService;
         private AsyncRelayCommand loadFromDbCommand;
+        private SpeechEntry currentEntry;
 
         public ExplorerPageViewModel(SpeechService speechService)
         {
@@ -19,6 +20,8 @@ namespace TtsClient.ViewModels
         }
 
         public ObservableCollection<SpeechEntry> SpeechEntries { get; } = new ();
+
+        public SpeechEntry CurrentEntry { get => currentEntry; set => SetProperty(ref currentEntry, value); }
 
         public AsyncRelayCommand LoadFromDbAsyncCommand =>
             loadFromDbCommand ??= new AsyncRelayCommand(async () =>
