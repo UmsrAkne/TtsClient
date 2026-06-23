@@ -12,6 +12,10 @@ namespace TtsClient.Databases
 
         public DbSet<SpeechMetadata> SpeechMetadata { get; set; }
 
+        public DbSet<AudioFileEntry> AudioFileEntries { get; set; }
+
+        public DbSet<AudioMetadata> AudioMetadata { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

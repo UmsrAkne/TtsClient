@@ -1,14 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Prism.Mvvm;
 
 namespace TtsClient.Models
 {
     /// <summary>
     /// テキストと音声のセットを表すクラスです。
     /// </summary>
-    public class SpeechEntry
+    public class SpeechEntry : BindableBase
     {
+        private AudioFileEntry selectedAudio;
+
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
 
@@ -25,27 +29,18 @@ namespace TtsClient.Models
         public string Title { get; set; } = string.Empty;
 
         /// <summary>
-        /// 実際に送信したSSML（または最終プロンプト）
-        /// </summary>
-        [Required]
-        public string ProcessedSsml { get; set; } = string.Empty;
-
-        /// <summary>
-        /// 生成された音声ファイルへ相対パス。 例：　Audios\20260616_192727_659.mp3
-        /// </summary>
-        [Required]
-        public string AudioRelativePath { get; set; } = string.Empty;
-
-        /// <summary>
-        /// 生成待ち/完了/エラー
-        /// </summary>
-        [Required]
-        public SpeechEntryStatus Status { get; set; } = SpeechEntryStatus.Pending;
-
-        /// <summary>
         /// 生成日時（ファイルの作成日とは別）
         /// </summary>
         [Required]
-        public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+        public virtual List<AudioFileEntry> AudioFiles { get; set; } = new ();
+
+        [NotMapped]
+        public AudioFileEntry SelectedAudio
+        {
+            get => selectedAudio;
+            set => SetProperty(ref selectedAudio, value);
+        }
     }
 }

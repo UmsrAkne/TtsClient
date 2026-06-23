@@ -27,5 +27,10 @@ namespace TtsClient.Utils
         {
             return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "speech_entries.json");
         }
+
+        public static string GetFullPathFromRelativePath(string relativePath)
+        {
+            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativePath);
+        }
     }
 }
