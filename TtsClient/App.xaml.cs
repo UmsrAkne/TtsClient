@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Windows;
-using Microsoft.EntityFrameworkCore;
-using Prism.DryIoc;
 using Prism.Ioc;
 using TtsClient.Databases;
 using TtsClient.TtsEngine;
@@ -24,8 +22,12 @@ public partial class App
         #if DEBUG
         if (AppSettings.Load(AppSettings.SettingFilePath).DatabaseClearEnabled)
         {
-            Console.WriteLine("設定ファイルの指定によりデータベースを初期化しました。( App.OnInitialized )");
+            Console.WriteLine("設定ファイルの指定によりデータベースを初期化しました。( App.CreateShell )");
             context.Database.EnsureDeleted();
+        }
+        else
+        {
+            Console.WriteLine("設定ファイルの指定により既存のデータベースを使用します。( App.CreateShell )");
         }
         #endif
 
