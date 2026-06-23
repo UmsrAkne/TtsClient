@@ -1,9 +1,11 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using CommunityToolkit.Mvvm.Input;
+using Prism.Commands;
 using Prism.Mvvm;
 using TtsClient.Databases;
 using TtsClient.Models;
+using TtsClient.Utils;
 
 namespace TtsClient.ViewModels
 {
@@ -22,6 +24,18 @@ namespace TtsClient.ViewModels
         public ObservableCollection<SpeechEntry> SpeechEntries { get; } = new ();
 
         public SpeechEntry CurrentEntry { get => currentEntry; set => SetProperty(ref currentEntry, value); }
+
+        public DelegateCommand PlayAudioCommand => new (() =>
+        {
+            var item = CurrentEntry?.SelectedAudio;
+            if (item == null)
+            {
+                return;
+            }
+
+            var path = PathHelper.GetFullPathFromRelativePath(item.AudioRelativePath);
+            AudioPlayerUtil.Play(path);
+        });
 
         public AsyncRelayCommand LoadFromDbAsyncCommand =>
             loadFromDbCommand ??= new AsyncRelayCommand(async () =>

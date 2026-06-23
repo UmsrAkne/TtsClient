@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Prism.Mvvm;
 
 namespace TtsClient.Models
 {
     /// <summary>
     /// テキストと音声のセットを表すクラスです。
     /// </summary>
-    public class SpeechEntry
+    public class SpeechEntry : BindableBase
     {
+        private AudioFileEntry selectedAudio;
+
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
 
@@ -31,5 +35,12 @@ namespace TtsClient.Models
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         public virtual List<AudioFileEntry> AudioFiles { get; set; } = new ();
+
+        [NotMapped]
+        public AudioFileEntry SelectedAudio
+        {
+            get => selectedAudio;
+            set => SetProperty(ref selectedAudio, value);
+        }
     }
 }
