@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace TtsClient.Models
@@ -27,6 +28,8 @@ namespace TtsClient.Models
         /// 生成日時（ファイルの作成日とは別）
         /// </summary>
         [Required]
-        public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+        public virtual List<AudioFileEntry> AudioFiles { get; set; } = new ();
     }
 }

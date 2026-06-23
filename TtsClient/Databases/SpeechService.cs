@@ -18,17 +18,20 @@ namespace TtsClient.Databases
 
         public async Task<IEnumerable<SpeechEntry>> GetHistoryAsync(int limit = 500)
         {
-            var all = await context.SpeechEntries.ToListAsync();
-
-            return all.OrderByDescending(s => s.CreatedAt)
-                .Take(limit);
+            // OrderBy を C# 側から実行できないため、生のSQLで代用する。
+            var sql = "SELECT * FROM SpeechEntries ORDER BY CreatedAt DESC LIMIT @p0";
+            return await context.SpeechEntries
+                .FromSqlRaw(sql, limit)
+                .Include(s => s.AudioFiles)
+                .ToListAsync();
         }
 
-        public async Task<IEnumerable<SpeechEntry>> GetSpeechEntries(DateTimeOffset fromDate)
+        public async Task<IEnumerable<SpeechEntry>> GetSpeechEntries(DateTime fromDate)
         {
             return await context.SpeechEntries
                 .Where(s => s.CreatedAt > fromDate)
                 .OrderBy(s => s.CreatedAt)
+                .Include(s => s.AudioFiles)
                 .ToListAsync();
         }
 

@@ -54,7 +54,7 @@ namespace TtsClient.ViewModels
                 Voice = "ja-JP-Wavenet-D",
             };
 
-            var now = DateTimeOffset.Now;
+            var now = DateTime.Now;
             var dateDirName = now.ToString("yyyy-MM-dd");
 
             var byteArray = await TtsService.SynthesizeAsync(req);

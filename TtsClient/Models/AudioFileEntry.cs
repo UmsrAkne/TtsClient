@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TtsClient.Models
 {
@@ -10,6 +11,7 @@ namespace TtsClient.Models
         public Guid Id { get; set; } = Guid.NewGuid();
 
         [Required]
+        [ForeignKey(nameof(SpeechEntryId))]
         public Guid SpeechEntryId { get; set; }
 
         /// <summary>
@@ -34,7 +36,7 @@ namespace TtsClient.Models
         /// 音声の生成日時
         /// </summary>
         [Required]
-        public DateTimeOffset GeneratedAt { get; set; } = DateTimeOffset.Now;
+        public DateTime GeneratedAt { get; set; } = DateTime.Now;
 
         // ナビゲーションプロパティ：この音声ファイルの生成パラメーター（話者、速度など）
         public List<AudioMetadata> Metadata { get; set; } = new();
