@@ -2,64 +2,53 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using TtsClient.Models;
 
 namespace TtsClient.Databases
 {
     public class SpeechService
     {
-        private readonly ISpeechRepository repository;
-        private readonly ISpeechMetadataRepository metadataRepository;
-        private readonly IAudioFileEntryRepository audioFileEntryRepository;
-        private readonly IAudioMetadataRepository audioMetadataRepository;
+        private readonly MyDbContext context;
 
-        // コンストラクタでリポジトリを注入（DI）
-        public SpeechService(
-            ISpeechRepository repository,
-            ISpeechMetadataRepository metadataRepository,
-            IAudioFileEntryRepository audioFileEntryRepository,
-            IAudioMetadataRepository audioMetadataRepository)
+        public SpeechService(MyDbContext context)
         {
-            this.repository = repository;
-            this.metadataRepository = metadataRepository;
-            this.audioFileEntryRepository = audioFileEntryRepository;
-            this.audioMetadataRepository = audioMetadataRepository;
+            this.context = context;
         }
 
         public async Task<IEnumerable<SpeechEntry>> GetHistoryAsync(int limit = 500)
         {
-            var entries = await repository.GetAllAsync();
-            return entries.OrderByDescending(s => s.CreatedAt)
+            var all = await context.SpeechEntries.ToListAsync();
+
+            return all.OrderByDescending(s => s.CreatedAt)
                 .Take(limit);
         }
 
         public async Task<IEnumerable<SpeechEntry>> GetSpeechEntries(DateTimeOffset fromDate)
         {
-            var entries = await repository.GetAllAsync();
-            entries = entries.Where(s => s.CreatedAt > fromDate);
-            return entries.OrderBy(s => s.CreatedAt);
+            return await context.SpeechEntries
+                .Where(s => s.CreatedAt > fromDate)
+                .OrderBy(s => s.CreatedAt)
+                .ToListAsync();
         }
 
         public async Task RegisterEntryAsync(SpeechEntry entry)
         {
-            await repository.AddAsync(entry);
-            await repository.SaveAsync();
+            context.SpeechEntries.Add(entry);
+            await context.SaveChangesAsync();
         }
 
         public async Task RegisterMetadataRangeAsync(IEnumerable<SpeechMetadata> speechMetadataList)
         {
-            foreach (var speechMetadata in speechMetadataList)
-            {
-                await metadataRepository.AddAsync(speechMetadata);
-            }
-
-            await metadataRepository.SaveAsync();
+            // foreachで毎回AddAsyncを呼ぶ必要はなく、AddRangeで一括追加
+            context.SpeechMetadata.AddRange(speechMetadataList);
+            await context.SaveChangesAsync();
         }
 
         public async Task RegisterAudioFileEntryAsync(AudioFileEntry entry)
         {
-            await audioFileEntryRepository.AddAsync(entry);
-            await audioFileEntryRepository.SaveAsync();
+            context.AudioFileEntries.Add(entry);
+            await context.SaveChangesAsync();
         }
     }
 }
