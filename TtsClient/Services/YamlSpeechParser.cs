@@ -49,10 +49,20 @@ namespace TtsClient.Services
                 {
                     result.Contents = stringValue;
                 }
+                else if (keyLower == "displayName".ToLower())
+                {
+                    result.DisplayName = stringValue;
+                }
                 else
                 {
                     result.Metadata[kvp.Key] = stringValue; // 任意のメタデータ
                 }
+            }
+
+            // DisplayName が未入力の場合はタイトルを入れておく。
+            if (string.IsNullOrWhiteSpace(result.DisplayName))
+            {
+                result.DisplayName = result.Title;
             }
 
             // バリデーション（データ検証）
