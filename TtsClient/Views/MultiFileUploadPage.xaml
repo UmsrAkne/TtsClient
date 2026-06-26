@@ -47,7 +47,7 @@
             Grid.Column="1"
             AcceptsReturn="True"
             AcceptsTab="True"
-            Text="{Binding Text}" />
+            Text="{Binding FileContent}" />
 
         <StackPanel
             Grid.Row="2"
