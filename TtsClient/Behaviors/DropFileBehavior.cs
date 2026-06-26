@@ -59,6 +59,7 @@ namespace TtsClient.Behaviors
 
                 var allowedFiles = files
                     .Where(f => !string.IsNullOrWhiteSpace(f) && IsAllowedExtension(f))
+                    .OrderBy(f => f)
                     .Select(f => new FileListItem(f));
 
                 if (AssociatedObject.ItemsSource is not ObservableCollection<FileListItem> list)
