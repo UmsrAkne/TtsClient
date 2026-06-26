@@ -44,7 +44,7 @@
                     </DataTemplate.Resources>
 
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Title}" />
+                        <TextBlock Text="{Binding DisplayName}" />
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
