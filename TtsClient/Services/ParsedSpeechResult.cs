@@ -11,6 +11,8 @@ namespace TtsClient.Services
 
         public string Contents { get; set; } = string.Empty;
 
+        public string DisplayName { get; set; } = string.Empty;
+
         /// <summary>
         /// 必須項目以外の任意要素を格納するディクショナリ
         /// </summary>

@@ -29,6 +29,12 @@ namespace TtsClient.Models
         public string Title { get; set; } = string.Empty;
 
         /// <summary>
+        /// UI表示用の文章のタイトル
+        /// </summary>
+        [Required]
+        public string DisplayName { get; set; } = string.Empty;
+
+        /// <summary>
         /// 生成日時（ファイルの作成日とは別）
         /// </summary>
         [Required]

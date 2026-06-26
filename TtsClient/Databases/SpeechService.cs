@@ -68,6 +68,7 @@ namespace TtsClient.Databases
             {
                 Title = results.Title,
                 Contents = results.Contents,
+                DisplayName = results.DisplayName,
             };
 
             var titleCall = results.Metadata.FirstOrDefault(kv => kv.Key == "TitleCall").Value ?? string.Empty;
