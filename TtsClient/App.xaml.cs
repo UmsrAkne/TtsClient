@@ -44,6 +44,7 @@ public partial class App
         containerRegistry.Register<MyDbContext>();
 
         containerRegistry.RegisterSingleton<SpeechService>();
+        containerRegistry.RegisterSingleton<TtsService>();
 
         containerRegistry.RegisterSingleton<ITtsEngine, DummyTtsEngine>();
         containerRegistry.RegisterSingleton<ITtsEngine, GoogleTtsEngine>();
