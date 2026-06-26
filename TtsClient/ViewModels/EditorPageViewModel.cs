@@ -1,24 +1,16 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using CommunityToolkit.Mvvm.Input;
 using Prism.Mvvm;
 using TtsClient.Databases;
-using TtsClient.Models;
-using TtsClient.Services;
-using TtsClient.Texts;
 using TtsClient.TtsEngine;
-using TtsClient.Utils;
 
 namespace TtsClient.ViewModels
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class EditorPageViewModel : BindableBase
     {
-        private readonly SsmlGen ssmlGen = new ();
         private readonly SpeechService speechService;
-        private readonly YamlSpeechParser yamlSpeechParser = new ();
         private TtsRequest pendingRequest = new ();
 
         public EditorPageViewModel(TtsService ttsService, SpeechService speechService)
@@ -38,53 +30,12 @@ namespace TtsClient.ViewModels
 
         public AsyncRelayCommand SendRequestCommand => new (async () =>
         {
-            var results = yamlSpeechParser.Parse(PendingRequest.Text);
-            var entry = new SpeechEntry()
+            if (string.IsNullOrWhiteSpace(PendingRequest?.Text))
             {
-                Title = results.Title,
-                Contents = results.Contents,
-            };
+                return;
+            }
 
-            var titleCall = results.Metadata.FirstOrDefault(kv => kv.Key == "TitleCall").Value;
-            titleCall = string.IsNullOrWhiteSpace(titleCall) ? string.Empty : titleCall;
-
-            var req = new TtsRequest
-            {
-                Text = TtsService.GetSsmlTextWithTitleCall(entry.Title, entry.Contents, titleCall),
-                Voice = "ja-JP-Wavenet-D",
-            };
-
-            var now = DateTime.Now;
-            var dateDirName = now.ToString("yyyy-MM-dd");
-
-            var byteArray = await TtsService.SynthesizeAsync(req);
-            var fileName = $"{now.ToString($"yyyyMMdd_HHmmss_fff")}.mp3";
-            var path = Path.Combine(PathHelper.AudioDirectoryName, dateDirName, fileName);
-            var absoluteDirPath = Path.Combine(AppContext.BaseDirectory, PathHelper.AudioDirectoryName, dateDirName);
-            Directory.CreateDirectory(absoluteDirPath);
-
-            await File.WriteAllBytesAsync(Path.Combine(absoluteDirPath, fileName), byteArray);
-            await speechService.RegisterEntryAsync(entry);
-
-            var audioFileEntry = new AudioFileEntry
-            {
-                SpeechEntryId = entry.Id,
-                AudioRelativePath = path,
-                ProcessedSsml = req.Text,
-                Status = SpeechEntryStatus.Pending,
-                GeneratedAt = now,
-            };
-
-            await speechService.RegisterAudioFileEntryAsync(audioFileEntry);
-
-            var metadataList = results.Metadata.Select(kv => new SpeechMetadata()
-            {
-                Key = kv.Key,
-                Value = kv.Value,
-                SpeechEntryId = entry.Id,
-            });
-
-            await speechService.RegisterMetadataRangeAsync(metadataList);
+            await speechService.ProcessSingleTextAsync(PendingRequest.Text, DateTime.Now, TtsService);
         });
 
         [Conditional("DEBUG")]

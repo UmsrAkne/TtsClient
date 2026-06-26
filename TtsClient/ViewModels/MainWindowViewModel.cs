@@ -22,6 +22,7 @@ public class MainWindowViewModel : BindableBase
         EditorPageViewModel editorPageViewModel,
         ExplorerPageViewModel explorerPageViewModel,
         TextFormatPageViewModel textFormatPageViewModel,
+        MultiFileUploadPageViewModel multiFileUploadPageViewModel,
         SpeechService speechService)
     {
         Logger.Log("MainWindowViewModel constructor executed.");
@@ -30,6 +31,7 @@ public class MainWindowViewModel : BindableBase
         EditorPageViewModel = editorPageViewModel;
         ExplorerPageViewModel = explorerPageViewModel;
         TextFormatPageViewModel = textFormatPageViewModel;
+        MultiFileUploadPageViewModel = multiFileUploadPageViewModel;
         SetupDebugData();
 
         _ = LoadSpeechesAsync();
@@ -42,6 +44,8 @@ public class MainWindowViewModel : BindableBase
     public ExplorerPageViewModel ExplorerPageViewModel { get; }
 
     public TextFormatPageViewModel TextFormatPageViewModel { get; }
+
+    public MultiFileUploadPageViewModel MultiFileUploadPageViewModel { get; set; }
 
     private async Task LoadSpeechesAsync()
     {

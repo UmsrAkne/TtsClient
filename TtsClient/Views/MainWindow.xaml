@@ -50,10 +50,18 @@
 
             <TabItem>
                 <TabItem.Header>
+                    <TextBlock Text="Multi File Input" />
+                </TabItem.Header>
+                <views:MultiFileUploadPage DataContext="{Binding MultiFileUploadPageViewModel}" />
+            </TabItem>
+
+            <TabItem>
+                <TabItem.Header>
                     <TextBlock Text="Text Formatter" />
                 </TabItem.Header>
                 <views:TextFormatPage DataContext="{Binding TextFormatPageViewModel}" />
             </TabItem>
+
         </TabControl>
 
         <Border Grid.Row="1">
