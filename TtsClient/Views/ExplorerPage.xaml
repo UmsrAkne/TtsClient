@@ -59,9 +59,11 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
 
-            <Border Grid.Row="0">
-                <TextBlock Text="{Binding CurrentEntry.Contents}" />
-            </Border>
+            <TextBox
+                AcceptsReturn="True"
+                FontSize="{StaticResource CommonFontSize}"
+                IsReadOnly="True"
+                Text="{Binding CurrentEntry.Contents}" />
 
             <Border Grid.Row="1">
                 <ListBox ItemsSource="{Binding CurrentEntry.AudioFiles}" SelectedItem="{Binding CurrentEntry.SelectedAudio}">
