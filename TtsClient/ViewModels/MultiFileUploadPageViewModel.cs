@@ -54,6 +54,8 @@ namespace TtsClient.ViewModels
                     Console.WriteLine($"Error processing file: {fileItem.FileInfo.Name}");
                 }
             }
+
+            TextFiles.Clear();
         });
 
         private void UpdateFileContent(FileListItem item)
